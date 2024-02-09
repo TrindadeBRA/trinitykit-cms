@@ -32,6 +32,9 @@ function enqueue_custom_admin_styles()
 }
 add_action('admin_enqueue_scripts', 'enqueue_custom_admin_styles');
 
+// Desativar notificações de plugins desatualizados
+add_filter('pre_site_transient_update_plugins', '__return_null');
+
 // /wp-json/trinitykit/header
 add_action('rest_api_init', 'register_custom_menu_endpoint');
 function register_custom_menu_endpoint() {

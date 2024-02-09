@@ -35,7 +35,7 @@ add_action('admin_enqueue_scripts', 'enqueue_custom_admin_styles');
 // /wp-json/trinitykit/header
 add_action('rest_api_init', 'register_custom_menu_endpoint');
 function register_custom_menu_endpoint() {
-    register_rest_route('trinitykit/v1', '/header/', array(
+    register_rest_route('trinitykit/v1', '/menu/', array(
         'methods' => 'GET',
         'callback' => 'get_custom_menu_data',
     ));

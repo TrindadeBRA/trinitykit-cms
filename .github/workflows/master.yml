@@ -17,4 +17,4 @@ jobs:
         server: ${{ secrets.FTP_HOST }}
         username: ${{ secrets.FTP_LOGIN }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /cms.thetrinityweb.com.br/wp-content/themes/trinitykit
+        server-dir: /cms.thetrinityweb.com.br/wp-content/themes/trinitykit/

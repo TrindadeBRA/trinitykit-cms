@@ -65,3 +65,4 @@ function get_page_data($data) {
     // Return a REST response with the page data
     return new WP_REST_Response($page_data, 200);
 }
+

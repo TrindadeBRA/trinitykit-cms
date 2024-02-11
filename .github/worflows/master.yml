@@ -1,6 +1,7 @@
 on:
   push:
-    - master
+    branches:
+      - master
 name: 🚀 Deploy - TrinityKit CMS
 jobs:
   web-deploy:

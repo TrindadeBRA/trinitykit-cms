@@ -6,6 +6,7 @@ Bem-vindo ao tema Trinity Kit CMS para WordPress! Este README fornece instruçõ
 
 1. Really Simple SSL
 2. Advanced Custom Fields PRO
+2. Yoast SEO
 
 ## Instalação
 

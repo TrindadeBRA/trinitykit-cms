@@ -1,7 +1,7 @@
-on: 
+on:
   push:
     - master
-name: 🚀 Deploy - TrinityKit CMS 
+name: 🚀 Deploy - TrinityKit CMS
 jobs:
   web-deploy:
     name: 🎉 Deploy

@@ -3,6 +3,8 @@ jQuery(document).ready(function($) {
     $('input[name="deploy_button"]').on('click', function(e) {
         e.preventDefault(); // Previne o comportamento padrão do formulário
 
+        console.log("clicaque")
+
         // Faz uma requisição GET
         $.get({
             url: 'https://api.github.com/repos/TrindadeBRA/trinitykit/actions/runs?status=completed&per_page=1', // Substitua pela URL de sua API

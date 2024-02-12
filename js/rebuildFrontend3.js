@@ -33,8 +33,7 @@ jQuery(document).ready(function($) {
                     },
                     error: function(xhr, status, error, response) {
                         console.error(status + ': ' + error);
-                        console.log(error);
-                        $('#response_area').text(response.message);
+                        $('#response_area').text('Houve algum erro na tentativa de reconstruir a aplicação. Aguarde alguns minutos.');
 
                     }
                 });

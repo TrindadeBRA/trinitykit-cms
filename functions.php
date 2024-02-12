@@ -94,7 +94,7 @@ function show_admin_page() {
 }
 
 function register_custom_scripts() {
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontend3.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontend.js', array('jquery'), '1.0', true);
 }
 add_action('admin_enqueue_scripts', 'register_custom_scripts');
 

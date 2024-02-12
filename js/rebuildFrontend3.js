@@ -31,9 +31,10 @@ jQuery(document).ready(function($) {
                         console.log("Reexecução iniciada com sucesso!!"); 
                         $('#response_area').text('Reexecução iniciada com sucesso! Aguarde alguns minutos.');
                     },
-                    error: function(xhr, status, error) {
+                    error: function(xhr, status, error, response) {
                         console.error(status + ': ' + error);
-                        $('#response_area').text(error);
+                        console.log(error);
+                        $('#response_area').text(response.message);
 
                     }
                 });

@@ -16,8 +16,8 @@
  *
  * Registers the page endpoint with WordPress REST API.
  */
-add_action('rest_api_init', 'register_page_endpoint');
-function register_page_endpoint() {
+add_action('rest_api_init', 'register_page_endpoint_teste');
+function register_page_endpoint_teste() {
     register_rest_route('trinitykit/v1', '/teste/', array(
         'methods' => 'GET',
         'callback' => 'get_page_data',

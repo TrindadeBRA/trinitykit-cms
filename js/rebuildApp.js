@@ -2,8 +2,8 @@ jQuery(document).ready(function($) {
 
     $('input[name="deploy_button"]').on('click', function(e) {
         e.preventDefault(); 
-        $(this).prop('disabled', true);
-        
+        $('input[name="deploy_button"]').prop('disabled', true);
+
         var github_user = $('#github_user').text();
         var github_repo = $('#github_repo').text();
         var github_token = $('#github_token').text();

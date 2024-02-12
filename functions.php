@@ -77,11 +77,17 @@ function show_admin_page() {
     echo '<form method="post">';
     echo '<input type="submit" name="deploy_button" value="Requisicao">';
     echo '<br>';
+    echo '<span id="github_user">';
     echo $github_user;
+    echo '</span>';
     echo '<br>';
+    echo '<span id="github_repo">';
     echo $github_repo;
+    echo '</span>';
     echo '<br>';
+    echo '<span id="github_token">';
     echo $github_token;
+    echo '</span>';
     echo '</form>';
     echo '</div>';
 

@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 /**
  * Register a custom REST API endpoint for fetching theme settings.

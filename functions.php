@@ -69,7 +69,7 @@ function show_admin_page() {
     echo '<h1>My Administration Page</h1>';
     // Add your page content here
     echo '<form method="post">';
-    echo '<input name="deploy_button" value="Requisicao">';
+    echo '<input type="button" name="deploy_button" value="Requisicao">';
     echo '</form>';
     echo '</div>';
 }

@@ -50,6 +50,8 @@ add_filter('pre_site_transient_update_plugins', '__return_null');
 
 
 
+
+
 // Add a function to register the page in the admin menu
 function register_admin_page() {
     add_menu_page(
@@ -68,44 +70,83 @@ function show_admin_page() {
     echo '<div class="wrap">';
     echo '<h1>My Administration Page</h1>';
     // Add your page content here
-    echo '<form method="post">';
-    echo '<input type="submit" name="deploy_button" value="Deploy Master Branch">';
-    echo '</form>';
+    echo '<button id="deploy_button">Deploy Master Branch</button>';
     echo '</div>';
 
-    if (isset($_POST['deploy_button'])) {
-        $result = get_latest_jobs();
-        if ($result) {
-            echo '<p>Deploy initiated successfully!</p>';
-        } else {
-            echo '<p>Failed to initiate deploy.</p>';
+    ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("deploy_button").addEventListener("click", function() {
+            deployMasterBranch();
+        });
+
+        function deployMasterBranch() {
+            fetch('/wp-json/myplugin/deploy-master-branch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // Handle successful response
+                alert('Deploy initiated successfully!');
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // Handle error
+                alert('Failed to initiate deploy.');
+            });
         }
-    }
+    });
+    </script>
+    <?php
 }
 
-// Function to fetch the latest jobs from GitHub Actions using cURL
-function get_latest_jobs() {
+// Add REST API endpoint to initiate deployment
+add_action('rest_api_init', function() {
+    register_rest_route('myplugin/v1', '/deploy-master-branch', array(
+        'methods' => 'POST',
+        'callback' => 'deploy_master_branch',
+        'permission_callback' => function() {
+            return current_user_can('manage_options');
+        }
+    ));
+});
+
+// Function to deploy the master branch using GitHub API
+function deploy_master_branch() {
     $github_token = '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'; // Replace with your GitHub token
     $repo_owner = 'TrindadeBRA'; // Replace with your GitHub username or organization name
     $repo_name = 'trinitykit'; // Replace with your GitHub repository name
 
-    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/runs?status=completed&per_page=1";
+    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/workflows/deploy.yml/dispatches";
 
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        "Authorization: token $github_token",
-        "X-GitHub-Api-Version: 2022-11-28",
-    ));
+    $data = array(
+        'ref' => 'refs/heads/master'
+    );
 
-    $response = curl_exec($ch);
-    curl_close($ch);
+    $options = array(
+        'http' => array(
+            'header' => "Authorization: token $github_token\r\n" .
+                        "Content-Type: application/json\r\n",
+            'method' => 'POST',
+            'content' => json_encode($data)
+        )
+    );
 
-    if ($response !== false) {
-        $data = json_decode($response, true);
-        return $data['workflow_runs'];
+    $context = stream_context_create($options);
+    $result = @file_get_contents($url, false, $context); // Suppress errors for file_get_contents
+
+    if ($result !== false) {
+        return array('success' => true);
     } else {
-        return false;
+        return array('success' => false);
     }
 }
-

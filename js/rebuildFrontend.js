@@ -33,6 +33,8 @@ jQuery(document).ready(function($) {
                     },
                     error: function(xhr, status, error) {
                         console.error(status + ': ' + error);
+                        $('#response_area').text(error);
+
                     }
                 });
             },

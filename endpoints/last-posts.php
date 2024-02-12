@@ -8,7 +8,7 @@ Description: Adiciona um endpoint personalizado para obter os últimos 3 posts p
 add_action('rest_api_init', 'register_last_posts_endpoint');
 
 function register_last_posts_endpoint() {
-    register_rest_route('trinitykit/v1', '/last-posts', array(
+    register_rest_route('trinitykit/v1', '/posts', array(
         'methods' => 'GET',
         'callback' => 'get_last_posts',
     ));

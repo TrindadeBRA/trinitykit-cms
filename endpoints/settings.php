@@ -87,6 +87,51 @@ function my_theme_add_custom_fields($wp_customize) {
 
     ));
 
+    // Field for Github - User
+    $wp_customize->add_setting('github_user', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('github_user', array(
+        'label' => __('Github User', 'my-theme'),
+        'section' => 'my_custom_settings_section',
+        'settings' => 'github_user',
+        'type' => 'text',
+        'description' => __('Github user do front.', 'my-theme'),
+
+    ));
+
+    // Field for Github - Repo
+    $wp_customize->add_setting('github_repo', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('github_repo', array(
+        'label' => __('Github Repo', 'my-theme'),
+        'section' => 'my_custom_settings_section',
+        'settings' => 'github_repo',
+        'type' => 'text',
+        'description' => __('Github repo do front.', 'my-theme'),
+
+    ));
+
+    // Field for Github - Token
+    $wp_customize->add_setting('github_token', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('github_token', array(
+        'label' => __('Github Repo', 'my-theme'),
+        'section' => 'my_custom_settings_section',
+        'settings' => 'github_token',
+        'type' => 'text',
+        'description' => __('Github token do front.', 'my-theme'),
+
+    ));
+
     // Field for Google Analytics ID
     $wp_customize->add_setting('google_analytics_id', array(
         'default' => 'G-XXXXXXX',

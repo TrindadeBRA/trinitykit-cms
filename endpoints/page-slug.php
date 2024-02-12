@@ -18,7 +18,7 @@
  */
 add_action('rest_api_init', 'register_page_endpoint');
 function register_page_endpoint() {
-    register_rest_route('trinitykit/v1/page', '/(?P<slug>[a-zA-Z0-9-]+)/', array(
+    register_rest_route('trinitykit/v1', '/page/(?P<slug>[a-zA-Z0-9-]+)', array(
         'methods' => 'GET',
         'callback' => 'get_page_data',
     ));
@@ -29,12 +29,12 @@ function register_page_endpoint() {
  *
  * Retrieves data about the specified page and prepares it for response.
  *
- * @param array $data The data from the request, including the page slug.
+ * @param WP_REST_Request $request The REST request object.
  * @return WP_REST_Response|WP_Error Response object containing page data or error message.
  */
-function get_page_data($data) {
-    // Get the page slug from the request data
-    $slug = $data['slug'];
+function get_page_data($request) {
+    // Get the page slug from the request parameters
+    $slug = $request['slug'];
 
     // Get the page by its slug
     $page = get_page_by_path($slug);
@@ -65,4 +65,3 @@ function get_page_data($data) {
     // Return a REST response with the page data
     return new WP_REST_Response($page_data, 200);
 }
-

@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
 
         // Faz uma requisição GET
         $.get({
-            url: 'URL_DA_API', // Substitua pela URL de sua API
+            url: 'https://api.github.com/repos/TrindadeBRA/trinitykit/actions/runs?status=completed&per_page=1', // Substitua pela URL de sua API
             success: function(response) {
                 console.log(response); // Loga a resposta da requisição
             },

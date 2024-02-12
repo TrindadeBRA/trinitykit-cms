@@ -55,9 +55,47 @@ function register_admin_page() {
 }
 add_action('admin_menu', 'register_admin_page');
 
-// Callback function to display the page content
 function show_admin_page() {
     echo '<div class="wrap">';
-    echo '<h1>Trinity Kit</h1>';
+    echo '<h1>My Administration Page</h1>';
+    // Add your page content here
+    echo '<form method="post">';
+    echo '<input type="submit" name="deploy_button" value="Deploy Master Branch">';
+    echo '</form>';
     echo '</div>';
+
+    if (isset($_POST['deploy_button'])) {
+        deploy_master_branch();
+    }
+}
+
+// Function to deploy the master branch using GitHub API
+function deploy_master_branch() {
+    $github_token = 'YOUR_GITHUB_TOKEN'; // Replace with your GitHub token
+    $repo_owner = 'YOUR_REPO_OWNER'; // Replace with your GitHub username or organization name
+    $repo_name = 'YOUR_REPO_NAME'; // Replace with your GitHub repository name
+
+    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/workflows/deploy.yml/dispatches";
+
+    $data = array(
+        'ref' => 'refs/heads/master'
+    );
+
+    $options = array(
+        'http' => array(
+            'header' => "Authorization: token $github_token\r\n" .
+                        "Content-Type: application/json\r\n",
+            'method' => 'POST',
+            'content' => json_encode($data)
+        )
+    );
+
+    $context = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    if ($result !== false) {
+        echo '<p>Deploy initiated successfully!</p>';
+    } else {
+        echo '<p>Failed to initiate deploy.</p>';
+    }
 }

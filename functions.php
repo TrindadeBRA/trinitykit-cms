@@ -30,13 +30,6 @@ function add_favicon()
 }
 add_action('wp_head', 'add_favicon');
 
-// Add admin-style.css
-function enqueue_custom_admin_styles()
-{
-    wp_enqueue_style('admin-styles', get_template_directory_uri() . '/panel-assets/admin-style.css');
-}
-add_action('admin_enqueue_scripts', 'enqueue_custom_admin_styles');
-
 // Desativar notificações de plugins desatualizados
 add_filter('pre_site_transient_update_plugins', '__return_null');
 

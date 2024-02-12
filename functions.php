@@ -85,41 +85,4 @@ function show_admin_page() {
     echo '</form>';
     echo '</div>';
 
-    // Check if the deploy_button form is submitted
-    if (isset($_POST['deploy_button'])) {
-        // Make a GET request to fetch the workflow runs
-        $response = wp_remote_get('https://api.github.com/repos/TrindadeBRA/trinitykit/actions/runs?status=completed&per_page=1', array(
-            'headers' => array(
-                'Authorization' => 'Bearer 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',
-            ),
-        ));
-
-        // Check if the request was successful
-        if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
-            $body = wp_remote_retrieve_body($response);
-            $data = json_decode($body, true);
-
-            if (isset($data['workflow_runs'][0]['id'])) {
-                $lastRunId = $data['workflow_runs'][0]['id'];
-
-                // Make a POST request to rerun the workflow
-                $rerun_response = wp_remote_post('https://api.github.com/repos/TrindadeBRA/trinitykit/actions/runs/' . $lastRunId . '/rerun', array(
-                    'headers' => array(
-                        'Authorization' => 'Bearer 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',
-                    ),
-                ));
-
-                // Check if the rerun request was successful
-                if (!is_wp_error($rerun_response) && wp_remote_retrieve_response_code($rerun_response) === 201) {
-                    echo '<p>Reexecução iniciada com sucesso!</p>';
-                } else {
-                    echo '<p>Ocorreu um erro ao iniciar a reexecução.</p>';
-                }
-            } else {
-                echo '<p>Nenhuma execução encontrada.</p>';
-            }
-        } else {
-            echo '<p>Ocorreu um erro ao buscar as execuções.</p>';
-        }
-    }
 }

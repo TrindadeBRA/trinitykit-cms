@@ -87,14 +87,13 @@ function show_admin_page() {
 function get_latest_jobs() {
     $github_token = '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'; // Replace with your GitHub token
     $repo_owner = 'TrindadeBRA'; // Replace with your GitHub username or organization name
-    $repo_name = 'trinitykit-cms'; // Replace with your GitHub repository name
+    $repo_name = 'trinitykit'; // Replace with your GitHub repository name
 
     $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/runs?status=completed&per_page=5";
 
     $options = array(
         'http' => array(
             'header' => "Authorization: token $github_token\r\n" .
-                        "Content-Type: application/json\r\n",
                         "X-GitHub-Api-Version: 2022-11-28\r\n",
             'method' => 'GET',
         )

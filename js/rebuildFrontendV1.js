@@ -26,7 +26,7 @@ jQuery(document).ready(function($) {
                         'Authorization': 'Bearer ' + github_token
                     },
                     success: function(response) {
-                        console.log("Reexecução iniciada com sucesso!!"); 
+                        console.log("Tentativa de reconstruir a aplicação iniciada com sucesso!!"); 
                         $('#response_area').text('Tentativa de reconstruir a aplicação iniciada com sucesso! Aguarde alguns minutos para o processo de deploy.');
                     },
                     error: function(xhr, status, error) {

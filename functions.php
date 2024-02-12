@@ -99,6 +99,6 @@ function register_custom_scripts() {
 add_action('admin_enqueue_scripts', 'register_custom_scripts');
 
 function register_custom_styles() {
-    wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildFrontend2.css', array(), '1.0', 'all');
+    wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildFrontend.css', array(), '1.0', 'all');
 }
 add_action('admin_enqueue_scripts', 'register_custom_styles');

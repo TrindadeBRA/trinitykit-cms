@@ -20,7 +20,7 @@ add_action('rest_api_init', 'register_page_endpoint_teste');
 function register_page_endpoint_teste() {
     register_rest_route('trinitykit/v1', '/teste/', array(
         'methods' => 'GET',
-        'callback' => 'get_page_data',
+        'callback' => 'get_page_data_teste',
     ));
 }
 
@@ -32,7 +32,7 @@ function register_page_endpoint_teste() {
  * @param array $data The data from the request, including the page slug.
  * @return WP_REST_Response|WP_Error Response object containing page data or error message.
  */
-function get_page_data($data) {
+function get_page_data_teste($data) {
     // Get the page slug from the request data
     $slug = $data['slug'];
 

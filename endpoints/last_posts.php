@@ -1,12 +1,11 @@
 <?php
 
 function custom_theme_api_endpoint() {
-    register_rest_route('trinitykit/v1', '/last_posts', array(
+    register_rest_route('trinitykit/v1', '/last-posts', array(
         'methods' => 'GET',
         'callback' => 'custom_get_last_three_posts',
     ));
 }
-
 
 function custom_get_last_three_posts() {
     $args = array(
@@ -49,6 +48,5 @@ function custom_get_last_three_posts() {
 
     return rest_ensure_response($posts);
 }
-
 
 add_action('rest_api_init', 'custom_theme_api_endpoint');

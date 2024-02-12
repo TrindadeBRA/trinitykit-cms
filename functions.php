@@ -73,9 +73,9 @@ function show_admin_page() {
 
     echo '<div class="wrap">';
     echo '<h1>Trinity Kit</h1>';
-    echo '<h3>Rebuildar aplicação</h3>';
+    echo '<p>Rebuildar aplicação</p>';
     echo '<form method="post">';
-    echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação">';
+    echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação" style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; border: none; cursor: pointer;">';
     echo '<div style="display:none;">';
     echo '<span id="github_user">';
     echo $github_user;

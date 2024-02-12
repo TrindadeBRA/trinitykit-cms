@@ -95,6 +95,7 @@ function get_latest_jobs() {
         'http' => array(
             'header' => "Authorization: token $github_token\r\n" .
                         "Content-Type: application/json\r\n",
+                        "X-GitHub-Api-Version: 2022-11-28\r\n",
             'method' => 'GET',
         )
     );

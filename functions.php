@@ -71,9 +71,9 @@ function show_admin_page() {
 
 // Function to deploy the master branch using GitHub API
 function deploy_master_branch() {
-    $github_token = 'YOUR_GITHUB_TOKEN'; // Replace with your GitHub token
-    $repo_owner = 'YOUR_REPO_OWNER'; // Replace with your GitHub username or organization name
-    $repo_name = 'YOUR_REPO_NAME'; // Replace with your GitHub repository name
+    $github_token = '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'; // Replace with your GitHub token
+    $repo_owner = 'TrindadeBRA'; // Replace with your GitHub username or organization name
+    $repo_name = 'trinitykit-cms'; // Replace with your GitHub repository name
 
     $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/workflows/deploy.yml/dispatches";
 

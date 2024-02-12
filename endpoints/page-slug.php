@@ -5,7 +5,7 @@
  * This endpoint retrieves data about a specific WordPress page.
  * It returns information such as the page title, content, date, and any custom fields associated with the page.
  *
- * Endpoint URL: /wp-json/trinitykit/v1/{page_slug}/
+ * Endpoint URL: /wp-json/trinitykit/v1/page/{page_slug}/
  * Method: GET
  * Parameters:
  *   - {page_slug}: The slug of the page to retrieve.
@@ -18,7 +18,7 @@
  */
 add_action('rest_api_init', 'register_page_endpoint');
 function register_page_endpoint() {
-    register_rest_route('trinitykit/v1', '/(?P<slug>[a-zA-Z0-9-]+)/', array(
+    register_rest_route('trinitykit/v1', '/page/(?P<slug>[a-zA-Z0-9-]+)/', array(
         'methods' => 'GET',
         'callback' => 'get_page_data',
     ));

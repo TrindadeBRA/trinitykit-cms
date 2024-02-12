@@ -41,26 +41,24 @@ add_filter('pre_site_transient_update_plugins', '__return_null');
 
 
 
-
-
-// Adicione uma função para registrar a página no menu do painel de administração
-function registrar_pagina_administracao() {
+// Add a function to register the page in the admin menu
+function register_admin_page() {
     add_menu_page(
-        'Minha Página de Administração', // Título da página
-        'Minha Página', // Título do menu
-        'manage_options', // Capacidade necessária para acessar esta página
-        'minha-pagina-admin', // Slug da página
-        'mostrar_pagina_admin', // Função de callback para exibir o conteúdo da página
-        'dashicons-admin-generic', // Ícone do menu (veja https://developer.wordpress.org/resource/dashicons/)
-        30 // Posição do menu
+        'Trinity Kit', // Page title
+        'My Page', // Menu title
+        'manage_options', // Capability required to access this page
+        'my-admin-page', // Page slug
+        'show_admin_page', // Callback function to display the page content
+        'dashicons-admin-generic', // Menu icon (see https://developer.wordpress.org/resource/dashicons/)
+        1 // Menu position
     );
 }
-add_action('admin_menu', 'registrar_pagina_administracao');
+add_action('admin_menu', 'register_admin_page');
 
-// Função de callback para exibir o conteúdo da página
-function mostrar_pagina_admin() {
+// Callback function to display the page content
+function show_admin_page() {
     echo '<div class="wrap">';
-    echo '<h1>Minha Página de Administração</h1>';
-    // Adicione aqui o conteúdo da sua página
+    echo '<h1>Trinity Kit</h1>';
+    // Add your page content here
     echo '</div>';
 }

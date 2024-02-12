@@ -4,7 +4,7 @@ define('siteUrl', get_site_url());
 
 require_once get_template_directory() . '/endpoints/menu.php';
 require_once get_template_directory() . '/endpoints/settings.php';
-require_once get_template_directory() . '/endpoints/page_slug.php';
+require_once get_template_directory() . '/endpoints/page-slug.php';
 require_once get_template_directory() . '/endpoints/latest-posts.php';
 
 // Add suporte a imagens destacadas

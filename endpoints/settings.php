@@ -124,7 +124,7 @@ function my_theme_add_custom_fields($wp_customize) {
     ));
 
     $wp_customize->add_control('github_token', array(
-        'label' => __('Github Repo', 'my-theme'),
+        'label' => __('Github Token', 'my-theme'),
         'section' => 'my_custom_settings_section',
         'settings' => 'github_token',
         'type' => 'text',

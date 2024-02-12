@@ -53,8 +53,8 @@ add_filter('pre_site_transient_update_plugins', '__return_null');
 // Add a function to register the page in the admin menu
 function register_admin_page() {
     add_menu_page(
-        'Trinity Kit',
-        'Trinity Kit',
+        'Rebuildar aplicação',
+        'Rebuildar aplicação',
         'manage_options',
         'my-admin-page',
         'show_admin_page',
@@ -72,22 +72,21 @@ function show_admin_page() {
     $github_token = get_theme_mod('github_token');
 
     echo '<div class="wrap">';
-    echo '<h1>My Administration Page</h1>';
-    // Add your page content here
+    echo '<h1>Trinity Kit</h1>';
+    echo '<h3>Rebuildar aplicação</h3>';
     echo '<form method="post">';
-    echo '<input type="submit" name="deploy_button" value="Requisicao">';
-    echo '<br>';
+    echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação">';
+    echo '<div style="display:none;">';
     echo '<span id="github_user">';
     echo $github_user;
     echo '</span>';
-    echo '<br>';
     echo '<span id="github_repo">';
     echo $github_repo;
     echo '</span>';
-    echo '<br>';
     echo '<span id="github_token">';
     echo $github_token;
     echo '</span>';
+    echo '</div>';
     echo '</form>';
     echo '</div>';
 

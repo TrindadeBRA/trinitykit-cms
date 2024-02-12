@@ -44,13 +44,13 @@ add_filter('pre_site_transient_update_plugins', '__return_null');
 // Add a function to register the page in the admin menu
 function register_admin_page() {
     add_menu_page(
-        'Trinity Kit', // Page title
-        'My Page', // Menu title
-        'manage_options', // Capability required to access this page
-        'my-admin-page', // Page slug
-        'show_admin_page', // Callback function to display the page content
-        'dashicons-admin-generic', // Menu icon (see https://developer.wordpress.org/resource/dashicons/)
-        1 // Menu position
+        'Trinity Kit',
+        'Trinity Kit',
+        'manage_options',
+        'my-admin-page',
+        'show_admin_page',
+        'dashicons-admin-generic',
+        1
     );
 }
 add_action('admin_menu', 'register_admin_page');
@@ -59,6 +59,5 @@ add_action('admin_menu', 'register_admin_page');
 function show_admin_page() {
     echo '<div class="wrap">';
     echo '<h1>Trinity Kit</h1>';
-    // Add your page content here
     echo '</div>';
 }

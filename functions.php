@@ -53,12 +53,12 @@ add_filter('pre_site_transient_update_plugins', '__return_null');
 // Add a function to register the page in the admin menu
 function register_admin_page() {
     add_menu_page(
-        'Rebuildar aplicação',
-        'Rebuildar aplicação',
+        'Reconstruçâo',
+        'Reconstruçâo',
         'manage_options',
         'my-admin-page',
         'show_admin_page',
-        'dashicons-admin-generic',
+        'dashicons-controls-repeat',
         1
     );
 }
@@ -72,10 +72,10 @@ function show_admin_page() {
     $github_token = get_theme_mod('github_token');
 
     echo '<div class="wrap">';
-    echo '<h1>Trinity Kit</h1>';
+    echo '<h1>Trinity Kit - Reconstruçâo do frontend</h1>';
     echo '<p>Reconstruir a aplicação do frontend para gerar arquivos estáticos atualizados com as últimas alterações do WordPress.</p>';
     echo '<form method="post">';
-    echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação" id="redeploy-button">';
+    echo '<input type="submit" name="deploy_button" value="Reconstruir a aplicação" id="redeploy-button">';
     echo '<div style="display:none;">';
     echo '<span id="github_user">';
     echo $github_user;

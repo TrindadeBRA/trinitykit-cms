@@ -93,12 +93,24 @@ function show_admin_page() {
 
 }
 
+// function register_custom_scripts() {
+//     wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontend.js', array('jquery'), '1.0', true);
+// }
+// add_action('admin_enqueue_scripts', 'register_custom_scripts');
+
+// function register_custom_styles() {
+//     wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildFrontend.css', array(), '1.0', 'all');
+// }
+// add_action('admin_enqueue_scripts', 'register_custom_styles');
+
 function register_custom_scripts() {
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontend.js', array('jquery'), '1.0', true);
+    $version = filemtime(get_template_directory() . '/js/rebuildFrontend.js'); // Obtém a data da última modificação do arquivo JS
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontend.js', array('jquery'), $version, true);
 }
 add_action('admin_enqueue_scripts', 'register_custom_scripts');
 
 function register_custom_styles() {
-    wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildFrontend.css', array(), '1.0', 'all');
+    $version = filemtime(get_template_directory() . '/css/rebuildFrontend.css'); // Obtém a data da última modificação do arquivo CSS
+    wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildFrontend.css', array(), $version, 'all');
 }
 add_action('admin_enqueue_scripts', 'register_custom_styles');

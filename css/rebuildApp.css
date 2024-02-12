@@ -1,0 +1,21 @@
+#redeploy-button {
+    background-color: #4CAF50; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    padding: 15px 32px; /* Espaçamento interno (topo/baixo, esquerda/direita) */
+    text-align: center; /* Alinhamento do texto */
+    text-decoration: none; /* Remover sublinhado do link */
+    display: inline-block; /* Exibir como um bloco */
+    font-size: 16px; /* Tamanho da fonte */
+    border-radius: 8px; /* Bordas arredondadas */
+    border: none; /* Remover borda */
+    cursor: pointer; /* Alterar o cursor ao passar por cima */
+}
+
+#redeploy-button:hover {
+    background-color: #45a049; /* Alterar a cor de fundo ao passar o mouse */
+}
+
+#redeploy-button:disabled {
+    background-color: #888; /* Cor de fundo mais escura quando desativado */
+    cursor: not-allowed; /* Alterar cursor para não permitido quando desativado */
+}

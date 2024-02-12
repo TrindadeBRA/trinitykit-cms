@@ -75,7 +75,7 @@ function show_admin_page() {
     echo '<h1>Trinity Kit</h1>';
     echo '<p>Rebuildar aplicação</p>';
     echo '<form method="post">';
-    echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação" style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; border: none; cursor: pointer;">';
+    echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação" id="redeploy-button">';
     echo '<div style="display:none;">';
     echo '<span id="github_user">';
     echo $github_user;
@@ -93,7 +93,11 @@ function show_admin_page() {
 }
 
 function register_custom_scripts() {
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildApp.js', array('jquery'), '1.0', true);
 }
-
 add_action('admin_enqueue_scripts', 'register_custom_scripts');
+
+function register_custom_styles() {
+    wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildApp.css', array(), '1.0', 'all');
+}
+add_action('admin_enqueue_scripts', 'register_custom_styles');

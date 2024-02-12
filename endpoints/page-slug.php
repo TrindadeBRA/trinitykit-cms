@@ -18,7 +18,7 @@
  */
 add_action('rest_api_init', 'register_page_endpoint');
 function register_page_endpoint() {
-    register_rest_route('trinitykit/v1', '/page/(?P<slug>[a-zA-Z0-9-]+)/', array(
+    register_rest_route('trinitykit/v1/page', '/(?P<slug>[a-zA-Z0-9-]+)/', array(
         'methods' => 'GET',
         'callback' => 'get_page_data',
     ));

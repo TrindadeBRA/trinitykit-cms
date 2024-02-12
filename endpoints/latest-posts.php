@@ -1,68 +1,69 @@
 <?php
 /**
- * Page Endpoint
+ * Latest Posts Endpoint
  *
- * This endpoint retrieves data about a specific WordPress page.
- * It returns information such as the page title, content, date, and any custom fields associated with the page.
+ * This endpoint retrieves data about the latest 3 WordPress posts.
  *
- * Endpoint URL: /wp-json/trinitykit/v1/{page_slug}/
+ * Endpoint URL: /wp-json/trinitykit/v1/latest-posts/
  * Method: GET
- * Parameters:
- *   - {page_slug}: The slug of the page to retrieve.
  */
 
 /**
- * Register Page Endpoint
+ * Register Latest Posts Endpoint
  *
- * Registers the page endpoint with WordPress REST API.
+ * Registers the latest posts endpoint with WordPress REST API.
  */
-add_action('rest_api_init', 'register_page_endpoint_teste');
-function register_page_endpoint_teste() {
-    register_rest_route('trinitykit/v1', '/teste/', array(
+add_action('rest_api_init', 'register_latest_posts_endpoint');
+function register_latest_posts_endpoint() {
+    register_rest_route('trinitykit/v1', '/latest-posts/', array(
         'methods' => 'GET',
-        'callback' => 'get_page_data_teste',
+        'callback' => 'get_latest_posts',
     ));
 }
 
 /**
- * Get Page Data
+ * Get Latest Posts
  *
- * Retrieves data about the specified page and prepares it for response.
+ * Retrieves data about the latest 3 posts and prepares it for response.
  *
- * @param array $data The data from the request, including the page slug.
- * @return WP_REST_Response|WP_Error Response object containing page data or error message.
+ * @return WP_REST_Response|WP_Error Response object containing latest posts data or error message.
  */
-function get_page_data_teste($data) {
-    // Get the page slug from the request data
-    $slug = $data['slug'];
+function get_latest_posts() {
+    // Query the latest 3 posts
+    $latest_posts_query = new WP_Query(array(
+        'post_type' => 'post',
+        'posts_per_page' => 3,
+        'orderby' => 'date',
+        'order' => 'DESC',
+    ));
 
-    // Get the page by its slug
-    $page = get_page_by_path($slug);
-
-    // If page not found, return an error
-    if (!$page) {
-        return new WP_Error('no_page', 'Página não encontrada.', array('status' => 404));
+    // If no posts found, return an error
+    if (!$latest_posts_query->have_posts()) {
+        return new WP_Error('no_posts', 'Nenhum post encontrado.', array('status' => 404));
     }
 
-    // Initialize an array to store page data
-    $page_data = array(
-        'id' => $page->ID,
-        'title' => get_the_title($page->ID),
-        'content' => apply_filters('the_content', $page->post_content),
-        'date' => $page->post_date,
-    );
+    // Initialize an array to store posts data
+    $posts_data = array();
 
-    // Get custom fields (ACFs) associated with the page
-    $acf_fields = get_fields($page->ID);
+    // Loop through each post and add its data to the array
+    while ($latest_posts_query->have_posts()) {
+        $latest_posts_query->the_post();
 
-    // Add custom fields to the page data
-    if ($acf_fields) {
-        foreach ($acf_fields as $key => $value) {
-            $page_data[$key] = $value;
-        }
+        // Get post data
+        $post_data = array(
+            'id' => get_the_ID(),
+            'title' => get_the_title(),
+            'content' => apply_filters('the_content', get_the_content()),
+            'date' => get_the_date(),
+        );
+
+        // Add post data to the array
+        $posts_data[] = $post_data;
     }
 
-    // Return a REST response with the page data
-    return new WP_REST_Response($page_data, 200);
+    // Reset post data
+    wp_reset_postdata();
+
+    // Return a REST response with the latest posts data
+    return new WP_REST_Response($posts_data, 200);
 }
-

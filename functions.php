@@ -91,4 +91,41 @@ function show_admin_page() {
     echo '</form>';
     echo '</div>';
 
+    // Add your JavaScript code here
+    echo '<script>';
+    echo 'jQuery(document).ready(function($) {';
+    echo '$(\'input[name="deploy_button"]\').on(\'click\', function(e) {';
+    echo 'e.preventDefault();';
+    echo 'var github_user = $(\'#github_user\').text();';
+    echo 'var github_repo = $(\'#github_repo\').text();';
+    echo 'var github_token = $(\'#github_token\').text();';
+    echo 'console.log("github_user", github_user);';
+    echo 'console.log("github_repo", github_repo);';
+    echo 'console.log("github_token", github_token);';
+    echo '$.ajax({';
+    echo 'url: \'https://api.github.com/repos/\' + github_user + \'/\' + github_repo + \'/actions/runs?status=completed&per_page=1\',';
+    echo 'success: function(response) {';
+    echo 'const lastRunId = response.workflow_runs[0].id;';
+    echo 'console.log(">>>", lastRunId);';
+    echo '$.ajax({';
+    echo 'url: \'https://api.github.com/repos/\' + github_user + \'/\' + github_repo + \'/actions/runs/\' + lastRunId + \'/rerun\',';
+    echo 'type: \'POST\',';
+    echo 'headers: {';
+    echo '\'Authorization\': \'Bearer \' + github_token';
+    echo '},';
+    echo 'success: function(response) {';
+    echo 'console.log("Reexecução iniciada com sucesso!");';
+    echo '},';
+    echo 'error: function(xhr, status, error) {';
+    echo 'console.error(status + \': \' + error);';
+    echo '}';
+    echo '});';
+    echo '},';
+    echo 'error: function(xhr, status, error) {';
+    echo 'console.error(status + \': \' + error);';
+    echo '}';
+    echo '});';
+    echo '});';
+    echo '});';
+    echo '</script>';
 }

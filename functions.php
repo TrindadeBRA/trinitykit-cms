@@ -41,6 +41,15 @@ add_filter('pre_site_transient_update_plugins', '__return_null');
 
 
 
+
+
+
+
+
+
+
+
+
 // Add a function to register the page in the admin menu
 function register_admin_page() {
     add_menu_page(
@@ -65,7 +74,12 @@ function show_admin_page() {
     echo '</div>';
 
     if (isset($_POST['deploy_button'])) {
-        deploy_master_branch();
+        $result = deploy_master_branch();
+        if ($result) {
+            echo '<p>Deploy initiated successfully!</p>';
+        } else {
+            echo '<p>Failed to initiate deploy.</p>';
+        }
     }
 }
 
@@ -91,11 +105,8 @@ function deploy_master_branch() {
     );
 
     $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
+    $result = @file_get_contents($url, false, $context); // Suppress errors for file_get_contents
 
-    if ($result !== false) {
-        echo '<p>Deploy initiated successfully!</p>';
-    } else {
-        echo '<p>Failed to initiate deploy.</p>';
-    }
+    return $result !== false;
 }
+

@@ -83,29 +83,29 @@ function show_admin_page() {
     }
 }
 
-// Function to fetch the latest jobs from GitHub Actions
+// Function to fetch the latest jobs from GitHub Actions using cURL
 function get_latest_jobs() {
     $github_token = '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'; // Replace with your GitHub token
     $repo_owner = 'TrindadeBRA'; // Replace with your GitHub username or organization name
     $repo_name = 'trinitykit'; // Replace with your GitHub repository name
 
-    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/runs?status=completed&per_page=5";
+    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/runs?status=completed&per_page=1";
 
-    $options = array(
-        'http' => array(
-            'header' => "Authorization: token $github_token\r\n" .
-                        "X-GitHub-Api-Version: 2022-11-28\r\n",
-            'method' => 'GET',
-        )
-    );
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Authorization: token $github_token",
+        "X-GitHub-Api-Version: 2022-11-28",
+    ));
 
-    $context = stream_context_create($options);
-    $result = @file_get_contents($url, false, $context); // Suppress errors for file_get_contents
+    $response = curl_exec($ch);
+    curl_close($ch);
 
-    if ($result !== false) {
-        $data = json_decode($result, true);
+    if ($response !== false) {
+        $data = json_decode($response, true);
         return $data['workflow_runs'];
     } else {
         return false;
     }
 }
+

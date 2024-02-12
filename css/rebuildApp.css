@@ -1,21 +1,26 @@
 #redeploy-button {
-    background-color: #4CAF50; /* Cor de fundo */
-    color: white; /* Cor do texto */
-    padding: 15px 32px; /* Espaçamento interno (topo/baixo, esquerda/direita) */
-    text-align: center; /* Alinhamento do texto */
-    text-decoration: none; /* Remover sublinhado do link */
-    display: inline-block; /* Exibir como um bloco */
-    font-size: 16px; /* Tamanho da fonte */
-    border-radius: 8px; /* Bordas arredondadas */
-    border: none; /* Remover borda */
-    cursor: pointer; /* Alterar o cursor ao passar por cima */
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 #redeploy-button:hover {
-    background-color: #45a049; /* Alterar a cor de fundo ao passar o mouse */
+    background-color: #45a049;
 }
 
 #redeploy-button:disabled {
-    background-color: #888; /* Cor de fundo mais escura quando desativado */
-    cursor: not-allowed; /* Alterar cursor para não permitido quando desativado */
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+#response_area {
+    color: black;
 }

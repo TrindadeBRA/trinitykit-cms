@@ -28,7 +28,8 @@ jQuery(document).ready(function($) {
                         'Authorization': 'Bearer ' + github_token
                     },
                     success: function(response) {
-                        console.log("Reexecução iniciada com sucesso!"); 
+                        console.log("Reexecução iniciada com sucesso!!"); 
+                        $('#response_area').text('Reexecução iniciada com sucesso! Aguarde alguns minutos.');
                     },
                     error: function(xhr, status, error) {
                         console.error(status + ': ' + error);

@@ -73,7 +73,7 @@ function show_admin_page() {
 
     echo '<div class="wrap">';
     echo '<h1>Trinity Kit</h1>';
-    echo '<p>Rebuildar aplicação</p>';
+    echo '<p>Reconstruir a aplicação do frontend para gerar arquivos estáticos atualizados com as últimas alterações do WordPress.</p>';
     echo '<form method="post">';
     echo '<input type="submit" name="deploy_button" value="Rebuildar a aplicação" id="redeploy-button">';
     echo '<div style="display:none;">';
@@ -88,12 +88,13 @@ function show_admin_page() {
     echo '</span>';
     echo '</div>';
     echo '</form>';
+    echo '<span id="response_area"></span>';
     echo '</div>';
 
 }
 
 function register_custom_scripts() {
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontendApp.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/rebuildFrontend.js', array('jquery'), '1.0', true);
 }
 add_action('admin_enqueue_scripts', 'register_custom_scripts');
 

@@ -20,6 +20,7 @@ function register_latest_posts_endpoint() {
         'methods' => 'GET',
         'callback' => 'get_latest_posts',
     ));
+    
 }
 
 /**

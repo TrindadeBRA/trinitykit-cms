@@ -74,7 +74,7 @@ function show_admin_page() {
     echo '</div>';
 
     if (isset($_POST['deploy_button'])) {
-        $result = deploy_master_branch();
+        $result = get_latest_jobs();
         if ($result) {
             echo '<p>Deploy initiated successfully!</p>';
         } else {
@@ -83,30 +83,29 @@ function show_admin_page() {
     }
 }
 
-// Function to deploy the master branch using GitHub API
-function deploy_master_branch() {
+// Function to fetch the latest jobs from GitHub Actions
+function get_latest_jobs() {
     $github_token = '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'; // Replace with your GitHub token
     $repo_owner = 'TrindadeBRA'; // Replace with your GitHub username or organization name
     $repo_name = 'trinitykit-cms'; // Replace with your GitHub repository name
 
-    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/workflows/deploy.yml/dispatches";
-
-    $data = array(
-        'ref' => 'refs/heads/master'
-    );
+    $url = "https://api.github.com/repos/{$repo_owner}/{$repo_name}/actions/runs?status=completed&per_page=5";
 
     $options = array(
         'http' => array(
             'header' => "Authorization: token $github_token\r\n" .
                         "Content-Type: application/json\r\n",
-            'method' => 'POST',
-            'content' => json_encode($data)
+            'method' => 'GET',
         )
     );
 
     $context = stream_context_create($options);
     $result = @file_get_contents($url, false, $context); // Suppress errors for file_get_contents
 
-    return $result !== false;
+    if ($result !== false) {
+        $data = json_decode($result, true);
+        return $data['workflow_runs'];
+    } else {
+        return false;
+    }
 }
-

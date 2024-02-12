@@ -64,12 +64,24 @@ function register_admin_page() {
 }
 add_action('admin_menu', 'register_admin_page');
 
+
+
 function show_admin_page() {
+    $github_user = get_theme_mod('github_user');
+    $github_repo = get_theme_mod('github_repo');
+    $github_token = get_theme_mod('github_token');
+
     echo '<div class="wrap">';
     echo '<h1>My Administration Page</h1>';
     // Add your page content here
     echo '<form method="post">';
     echo '<input type="submit" name="deploy_button" value="Requisicao">';
+    echo '<br>';
+    echo $github_user;
+    echo '<br>';
+    echo $github_repo;
+    echo '<br>';
+    echo $github_token;
     echo '</form>';
     echo '</div>';
 

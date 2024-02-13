@@ -57,6 +57,7 @@ function get_latest_posts() {
             'id' => get_the_ID(),
             'title' => get_the_title(),
             'content' => wp_trim_words(get_the_content(), 30),
+            'thumbnail_url' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
             'date' => get_the_date(),
             'category' => get_the_category()[0]->name,
             'author_name' => get_the_author_meta('display_name'),

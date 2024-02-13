@@ -1,5 +1,26 @@
 <?php
 /**
+ * Latest Posts Endpoint
+ *
+ * This endpoint retrieves data about the latest 3 WordPress posts.
+ *
+ * Endpoint URL: /wp-json/trinitykit/v1/latest-posts/
+ * Method: GET
+ */
+
+/**
+ * Register Latest Posts Endpoint
+ *
+ * Registers the latest posts endpoint with WordPress REST API.
+ */
+add_action('rest_api_init', 'register_latest_posts_endpoint');
+function register_latest_posts_endpoint() {
+    register_rest_route('trinitykit/v1', '/latest-posts/', array(
+        'methods' => 'GET',
+        'callback' => 'get_latest_posts',
+    ));
+}
+/**
  * Get Latest Posts
  *
  * Retrieves data about the latest 3 posts and prepares it for response.

@@ -80,8 +80,7 @@ function get_latest_posts() {
 
     // Return a REST response with the latest posts data and ACFs
     return new WP_REST_Response(array(
-        'indexBlogData' => $acfs,
-        'recentPosts' => $posts_data,
+        'custom_fields' => $acfs,
+        'recent_posts' => $posts_data,
     ), 200);
 }
-

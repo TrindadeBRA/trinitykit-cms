@@ -1,6 +1,6 @@
 <?php
 // Adicione este código ao seu arquivo functions.php do tema ou a um plugin
-function registrar_tipo_post_talent_bank() {
+function register_talent_bank() {
     $labels = array(
         'name'                  => _x( 'Banco de talentos', 'Nome do tipo de post' ),
         'singular_name'         => _x( 'Talento', 'Nome singular do tipo de post' ),
@@ -42,19 +42,16 @@ function registrar_tipo_post_talent_bank() {
  
     register_post_type( 'talent_bank', $args );
 }
-add_action( 'init', 'registrar_tipo_post_talent_bank' );
+add_action( 'init', 'register_talent_bank' );
 
 add_action( 'rest_api_init', function () {
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(
         'methods' => 'POST',
-        'callback' => 'criar_talento',
-        'permission_callback' => function () {
-            return current_user_can( 'publish_posts' );
-        }
+        'callback' => 'add_talent',
     ));
 });
 
-function criar_talento( $request ) {
+function add_talent( $request ) {
     $params = $request->get_params();
     
     $postarr = array(

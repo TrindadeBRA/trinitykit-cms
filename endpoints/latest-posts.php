@@ -1,27 +1,5 @@
 <?php
 /**
- * Latest Posts Endpoint
- *
- * This endpoint retrieves data about the latest 3 WordPress posts.
- *
- * Endpoint URL: /wp-json/trinitykit/v1/latest-posts/
- * Method: GET
- */
-
-/**
- * Register Latest Posts Endpoint
- *
- * Registers the latest posts endpoint with WordPress REST API.
- */
-add_action('rest_api_init', 'register_latest_posts_endpoint');
-function register_latest_posts_endpoint() {
-    register_rest_route('trinitykit/v1', '/latest-posts/', array(
-        'methods' => 'GET',
-        'callback' => 'get_latest_posts',
-    ));
-}
-
-/**
  * Get Latest Posts
  *
  * Retrieves data about the latest 3 posts and prepares it for response.
@@ -53,8 +31,12 @@ function get_latest_posts() {
         $post_data = array(
             'id' => get_the_ID(),
             'title' => get_the_title(),
-            'content' => apply_filters('the_content', get_the_content()),
+            'content' => wp_trim_words(get_the_content(), 30), // Limit content to 30 words.
             'date' => get_the_date(),
+            'category' => get_the_category()[0]->name, // First category name.
+            'author_name' => get_the_author_meta('display_name'),
+            'author_role' => get_the_author_meta('role'),
+            'author_photo' => get_avatar_url(get_the_author_meta('user_email')), // Author photo/avatar URL.
         );
 
         // Add post data to the array

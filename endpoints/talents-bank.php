@@ -45,7 +45,7 @@ function registrar_tipo_post_talent_bank() {
 add_action( 'init', 'registrar_tipo_post_talent_bank' );
 
 add_action( 'rest_api_init', function () {
-    register_rest_route( 'talent_bank/v1', '/add_talent/', array(
+    register_rest_route( 'trinitykit/v1/talents-bank', '/add_talent/', array(
         'methods' => 'POST',
         'callback' => 'criar_talento',
         'permission_callback' => function () {

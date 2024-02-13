@@ -52,12 +52,13 @@ function get_latest_posts() {
         $post_data = array(
             'id' => get_the_ID(),
             'title' => get_the_title(),
-            'content' => wp_trim_words(get_the_content(), 30), // Limit content to 30 words.
+            'content' => wp_trim_words(get_the_content(), 30),
             'date' => get_the_date(),
-            'category' => get_the_category()[0]->name, // First category name.
+            'category' => get_the_category()[0]->name,
             'author_name' => get_the_author_meta('display_name'),
             'author_role' => get_the_author_meta('role'),
-            'author_photo' => get_avatar_url(get_the_author_meta('user_email')), // Author photo/avatar URL.
+            'author_photo' => get_avatar_url(get_the_author_meta('user_email')), 
+            'slug' => basename(get_permalink()),
         );
 
         // Add post data to the array

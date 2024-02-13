@@ -44,10 +44,6 @@ function get_latest_posts() {
     // Initialize an array to store posts data
     $posts_data = array();
 
-    // Obtém o papel do usuário administrador
-    $admin_user = get_userdata(1);
-    $admin_role = ($admin_user) ? $admin_user->roles[0] : 'N/A';
-
     // Loop through each post and add its data to the array
     while ($latest_posts_query->have_posts()) {
         $latest_posts_query->the_post();
@@ -61,7 +57,6 @@ function get_latest_posts() {
             'date' => get_the_date(),
             'category' => get_the_category()[0]->name,
             'author_name' => get_the_author_meta('display_name'),
-            'author_role' => $admin_role, // Usando o papel do usuário administrador
             'author_photo' => get_avatar_url(get_the_author_meta('user_email')), 
             'slug' => basename(get_permalink()),
         );
@@ -70,9 +65,23 @@ function get_latest_posts() {
         $posts_data[] = $post_data;
     }
 
+    // Get the blog page
+    $blog_page = get_page_by_path('blog');
+    if (!$blog_page) {
+        return new WP_Error('not_found', 'Página com slug "blog" não encontrada.', array('status' => 404));
+    }
+    $post_id = $blog_page->ID;
+
+    // Get ACFs for the blog page
+    $acfs = get_fields($post_id);
+
     // Reset post data
     wp_reset_postdata();
 
-    // Return a REST response with the latest posts data
-    return new WP_REST_Response($posts_data, 200);
+    // Return a REST response with the latest posts data and ACFs
+    return new WP_REST_Response(array(
+        'indexBlogData' => $acfs,
+        'recentPosts' => $posts_data,
+    ), 200);
 }
+

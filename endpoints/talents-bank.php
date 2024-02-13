@@ -63,15 +63,15 @@ function add_talent( $request ) {
     $post_id = wp_insert_post( $postarr );
 
     // Salvar os campos ACF
-    update_field( 'nome_completo', sanitize_text_field( $params['nome_completo'] ), $post_id );
+    update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
     update_field( 'email', sanitize_email( $params['email'] ), $post_id );
-    update_field( 'telefone', sanitize_text_field( $params['telefone'] ), $post_id );
+    update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
     // Salvar arquivo de CV
-    if (!empty($_FILES['cv_file']['name'])) {
-        $file = wp_upload_bits($_FILES['cv_file']['name'], null, file_get_contents($_FILES['cv_file']['tmp_name']));
+    if (!empty($_FILES['presentation_document']['name'])) {
+        $file = wp_upload_bits($_FILES['presentation_document']['name'], null, file_get_contents($_FILES['presentation_document']['tmp_name']));
         if ($file['error'] == '') {
-            update_field('cv_file', $file['url'], $post_id);
+            update_field('presentation_document', $file['url'], $post_id);
         }
     }
 

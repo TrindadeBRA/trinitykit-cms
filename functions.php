@@ -6,6 +6,7 @@ require_once get_template_directory() . '/endpoints/menu.php';
 require_once get_template_directory() . '/endpoints/settings.php';
 require_once get_template_directory() . '/endpoints/page-slug.php';
 require_once get_template_directory() . '/endpoints/latest-posts.php';
+require_once get_template_directory() . '/endpoints/talents-bank.php';
 
 // Add suporte a imagens destacadas
 add_theme_support('post-thumbnails');

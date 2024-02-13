@@ -44,6 +44,10 @@ function get_latest_posts() {
     // Initialize an array to store posts data
     $posts_data = array();
 
+    // Obtém o papel do usuário administrador
+    $admin_user = get_userdata(1);
+    $admin_role = ($admin_user) ? $admin_user->roles[0] : 'N/A';
+
     // Loop through each post and add its data to the array
     while ($latest_posts_query->have_posts()) {
         $latest_posts_query->the_post();
@@ -56,7 +60,7 @@ function get_latest_posts() {
             'date' => get_the_date(),
             'category' => get_the_category()[0]->name,
             'author_name' => get_the_author_meta('display_name'),
-            'author_role' => get_the_author_meta('role'),
+            'author_role' => $admin_role, // Usando o papel do usuário administrador
             'author_photo' => get_avatar_url(get_the_author_meta('user_email')), 
             'slug' => basename(get_permalink()),
         );

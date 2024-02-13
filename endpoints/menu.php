@@ -54,7 +54,7 @@ function get_custom_menu_data() {
 
         // If the post slug is "home", set it to "/"
         if($post_slug === "home"){
-            $post_slug = "/";
+            $post_slug = "";
         }
 
         // Add the processed menu item to the array

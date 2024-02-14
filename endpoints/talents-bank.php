@@ -90,6 +90,11 @@ function handle_work_with_us_form_submission($request) {
         }
     }
 
+    update_field( 'full_name', $name, $post_id );
+    update_field( 'email', $email, $post_id );
+    update_field( 'cellphone', $phone, $post_id );
+    update_field( 'presentation_document', $attachment_id, $post_id );
+
     if ($post_id) {
         return new WP_REST_Response(array('success' => true), 200);
     } else {

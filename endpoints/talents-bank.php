@@ -86,13 +86,16 @@ function add_talent( $request ) {
             return new WP_Error( 'error', 'Erro ao criar o post', array( 'status' => 500 ) );
         }
 
+        $file = $_FILES['presentation_document'];
+        $attachment_id = media_handle_upload( $file, 0 );
+
         // Salvando os campos personalizados usando ACF
         update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
         update_field( 'email', sanitize_email( $params['email'] ), $post_id );
         update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
         // Associando o arquivo ao post
-        update_field( 'presentation_document', $attachment_id, $post_id );
+        // update_field( 'presentation_document', $attachment_id, $post_id );
 
         // Retornando uma resposta da API REST
         return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );

@@ -75,10 +75,10 @@ function add_talent( $request ) {
     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
     // Salvando o arquivo de apresentação (CV)
-    if (!empty($_FILES['presentation_document']['name'])) {
-        $file = wp_upload_bits($_FILES['presentation_document']['name'], null, file_get_contents($_FILES['presentation_document']['tmp_name']));
+    if (!empty($_FILES['doc_file']['name'])) {
+        $file = wp_upload_bits($_FILES['doc_file']['name'], null, file_get_contents($_FILES['doc_file']['tmp_name']));
         if ($file['error'] == '') {
-            update_field('presentation_document', $file['url'], $post_id);
+            update_field('doc_file', $file['url'], $post_id);
         }
     }
 

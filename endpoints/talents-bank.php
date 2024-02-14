@@ -1,5 +1,7 @@
 <?php
 // Adicione este código ao seu arquivo functions.php do tema ou a um plugin
+
+// Função para registrar o tipo de post "Banco de talentos"
 function register_talent_bank() {
     $labels = array(
         'name'                  => _x( 'Banco de talentos', 'Nome do tipo de post' ),
@@ -24,7 +26,7 @@ function register_talent_bank() {
         'items_list_navigation' => _x( 'Navegação lista de Talentos', 'Talento' ),
         'items_list'            => _x( 'Lista de Talentos', 'Talento' ),
     );
- 
+
     $args = array(
         'labels'              => $labels,
         'public'              => true,
@@ -39,35 +41,40 @@ function register_talent_bank() {
         'menu_position'       => 5,
         'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields' ),
     );
- 
+
+    // Registrando o tipo de post "Banco de talentos"
     register_post_type( 'talent_bank', $args );
 }
 add_action( 'init', 'register_talent_bank' );
 
+// Adicionando uma rota de API REST para adicionar talentos
 add_action( 'rest_api_init', function () {
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(
         'methods' => 'POST',
-        'callback' => 'add_talent',
+        'callback' => 'add_talent', // Chama a função add_talent quando esta rota é acessada
     ));
 });
 
+// Função para adicionar um talento
 function add_talent( $request ) {
-    $params = $request->get_params();
-    
+    $params = $request->get_params(); // Obtendo os parâmetros da requisição
+
+    // Criando um array com os dados do post
     $postarr = array(
-        'post_title'    => sanitize_text_field( $params['nome_completo'] ),
+        'post_title'    => sanitize_text_field( $params['nome_completo'] ), // Sanitizando e definindo o título do post
         'post_status'   => 'publish',
         'post_type'     => 'talent_bank'
     );
 
+    // Inserindo o post e obtendo o ID
     $post_id = wp_insert_post( $postarr );
 
-    // Salvar os campos ACF
+    // Salvando os campos personalizados usando ACF
     update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
     update_field( 'email', sanitize_email( $params['email'] ), $post_id );
     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
-    // Salvar arquivo de CV
+    // Salvando o arquivo de apresentação (CV)
     if (!empty($_FILES['presentation_document']['name'])) {
         $file = wp_upload_bits($_FILES['presentation_document']['name'], null, file_get_contents($_FILES['presentation_document']['tmp_name']));
         if ($file['error'] == '') {
@@ -75,5 +82,6 @@ function add_talent( $request ) {
         }
     }
 
+    // Retornando uma resposta da API REST
     return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
 }

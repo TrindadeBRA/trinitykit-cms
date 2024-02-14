@@ -52,50 +52,47 @@ add_action( 'init', 'register_talent_bank' );
 add_action( 'rest_api_init', function () {
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(
         'methods' => 'POST',
-        'callback' => 'add_talent', // Chama a função add_talent quando esta rota é acessada
+        'callback' => 'handle_work_with_us_form_submission',
     ));
 });
 
-// Função para adicionar um talento
-function add_talent( $request ) {
-    $params = $request->get_params(); // Obtendo os parâmetros da requisição
 
-    // Verificar se os campos necessários estão presentes
-    if ( isset( $params['full_name'] ) && isset( $params['email'] ) && isset( $params['cellphone'] ) && isset( $params['presentation_document'] ) ) {
 
-        // Criar um novo post do tipo talent_bank
-        $post_data = array(
-            'post_title'    => $params['full_name'], // Título do post
-            'post_type'     => 'talent_bank', // Tipo do post
-            'post_status'   => 'publish', // Status do post
-        );
 
-        // Inserir o post no banco de dados
-        $post_id = wp_insert_post( $post_data );
 
-        // Verificar se o post foi criado com sucesso
-        if ( ! is_wp_error( $post_id ) ) {
 
-            // Salvar o arquivo de apresentação (presentation_document) no WordPress
-            $file_id = media_handle_upload( 'presentation_document', 0 );
+function handle_work_with_us_form_submission($request) {
+    $params = $request->get_params();
 
-            // Verificar se o upload do arquivo foi bem sucedido
-            if ( ! is_wp_error( $file_id ) ) {
+    // Extrair os parâmetros do request
+    $name = sanitize_text_field($params['name']);
+    $email = sanitize_email($params['email']);
+    $phone = sanitize_text_field($params['phone']);
 
-                // Associar o arquivo ao post recém-criado
-                update_post_meta( $post_id, 'presentation_document', $file_id );
+    // Criar o post
+    $post_id = wp_insert_post(array(
+        'post_title'   => $name,
+        'post_content' => '',
+        'post_status'  => 'publish',
+        'post_type'    => 'talent_bank',
+    ));
 
-                // Retornar uma resposta de sucesso
-                return new WP_REST_Response( array( 'message' => 'Talent added successfully.' ), 200 );
-            } else {
-                // Se houver um erro no upload do arquivo, excluir o post criado
-                wp_delete_post( $post_id, true );
-                return new WP_Error( 'upload_error', 'Failed to upload presentation document.', array( 'status' => 500 ) );
-            }
-        } else {
-            return new WP_Error( 'post_error', 'Failed to create talent post.', array( 'status' => 500 ) );
+    // Manipular o upload da imagem e definir como imagem destacada
+    if (!empty($_FILES['presentation_document'])) {
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+
+        $attachment_id = media_handle_upload('presentation_document', $post_id);
+
+        if (!is_wp_error($attachment_id)) {
+            set_post_thumbnail($post_id, $attachment_id);
         }
+    }
+
+    if ($post_id) {
+        return new WP_REST_Response(array('success' => true), 200);
     } else {
-        return new WP_Error( 'missing_fields', 'One or more required fields are missing.', array( 'status' => 400 ) );
+        return new WP_Error('submission_failed', __('Failed to submit form'), array('status' => 500));
     }
 }

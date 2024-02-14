@@ -75,6 +75,35 @@ function add_talent( $request ) {
     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
     // Salvando o arquivo de apresentação (CV)
+    if (!empty($_FILES['presentation_document']['name'])) {
+        $file = wp_upload_bits($_FILES['presentation_document']['name'], null, file_get_contents($_FILES['presentation_document']['tmp_name']));
+        if ($file['error'] == '') {
+            update_field('presentation_document', $file['url'], $post_id);
+        }
+    }
+
+    // Retornando uma resposta da API REST
+    return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
+}
+
+    $params = $request->get_params(); // Obtendo os parâmetros da requisição
+
+    // Criando um array com os dados do post
+    $postarr = array(
+        'post_title'    => sanitize_text_field( $params['nome_completo'] ), // Sanitizando e definindo o título do post
+        'post_status'   => 'publish',
+        'post_type'     => 'talent_bank'
+    );
+
+    // Inserindo o post e obtendo o ID
+    $post_id = wp_insert_post( $postarr );
+
+    // Salvando os campos personalizados usando ACF
+    update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
+    update_field( 'email', sanitize_email( $params['email'] ), $post_id );
+    update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
+
+    // Salvando o arquivo de apresentação (CV)
     if (!empty($_FILES['doc_file']['name'])) {
         $file = wp_upload_bits($_FILES['doc_file']['name'], null, file_get_contents($_FILES['doc_file']['tmp_name']));
         if ($file['error'] == '') {

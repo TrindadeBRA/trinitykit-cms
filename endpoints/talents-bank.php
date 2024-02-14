@@ -78,61 +78,18 @@ function add_talent( $request ) {
     update_field( 'email', sanitize_email( $params['email'] ), $post_id );
     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
-    // Upar arquivo enviado em $params['telefone']
+    // Realizando o upload do arquivo
+    $file = $_FILES['presentation_document'];
+    $attachment_id = media_handle_upload( 'presentation_document', $post_id );
 
+    if ( is_wp_error( $attachment_id ) ) {
+        // Em caso de erro no upload do arquivo, você pode tratar o erro aqui
+        return new WP_Error( 'error', 'Erro ao fazer upload do arquivo', array( 'status' => 500 ) );
+    }
+
+    // Associando o arquivo ao post
+    update_field( 'presentation_document', $attachment_id, $post_id );
 
     // Retornando uma resposta da API REST
     return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
-}
-
-<?php
-/*
-Plugin Name: Custom Image Upload Endpoint
-Description: Handle image uploads via custom endpoint
-Version: 1.0
-*/
-
-// Adicione um novo endpoint para o upload de imagens
-add_action('rest_api_init', function () {
-    register_rest_route('custom-image-upload/v1', '/upload', array(
-        'methods' => 'POST',
-        'callback' => 'handle_image_upload',
-        'permission_callback' => function () {
-            return current_user_can('upload_files');
-        },
-    ));
-});
-
-// Função para lidar com o upload de imagens
-function handle_image_upload($request) {
-    $response = array();
-    
-    // Verifique se há um arquivo enviado
-    if (isset($_FILES['image'])) {
-        $file = $_FILES['image'];
-        
-        // Verifique se não há erros no upload
-        if ($file['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = wp_upload_dir();
-            $target_dir = $upload_dir['path'];
-            $target_file = $target_dir . '/' . basename($file['name']);
-            
-            // Mova o arquivo para o diretório de upload do WordPress
-            if (move_uploaded_file($file['tmp_name'], $target_file)) {
-                $response['success'] = true;
-                $response['url'] = $upload_dir['url'] . '/' . basename($file['name']);
-            } else {
-                $response['success'] = false;
-                $response['error'] = 'Erro ao mover o arquivo para o diretório de upload.';
-            }
-        } else {
-            $response['success'] = false;
-            $response['error'] = 'Erro durante o upload do arquivo.';
-        }
-    } else {
-        $response['success'] = false;
-        $response['error'] = 'Nenhum arquivo enviado.';
-    }
-    
-    return rest_ensure_response($response);
 }

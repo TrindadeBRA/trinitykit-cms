@@ -47,7 +47,6 @@ add_action( 'init', 'register_talent_bank' );
 
 
 
-
 // Adiciona colunas personalizadas à tela de listagem do post type talent_bank
 function custom_talent_bank_columns( $columns ) {
     // Adiciona colunas personalizadas
@@ -55,6 +54,8 @@ function custom_talent_bank_columns( $columns ) {
     $columns['email'] = 'Email';
     $columns['cellphone'] = 'Cellphone';
     $columns['presentation_document'] = 'Presentation Document';
+    unset( $columns['author'] );
+
 
     return $columns;
 }

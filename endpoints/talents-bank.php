@@ -36,7 +36,7 @@ function register_talent_bank() {
         'capability_type'     => 'post',
         'has_archive'         => true,
         'hierarchical'        => false,
-        'menu_position'       => 2,
+        'menu_position'       => 3,
         'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields' ),
         'menu_icon'           => 'dashicons-star-filled',
     );

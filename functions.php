@@ -54,7 +54,7 @@ function register_admin_page() {
         'my-admin-page',
         'show_admin_page',
         'dashicons-controls-repeat',
-        1
+        2
     );
 }
 add_action('admin_menu', 'register_admin_page');

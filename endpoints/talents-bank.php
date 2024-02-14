@@ -4,7 +4,7 @@ function register_talent_bank() {
     $labels = array(
         'name'                  => _x( 'Banco de talentos', 'Nome do tipo de post' ),
         'singular_name'         => _x( 'Talento', 'Nome singular do tipo de post' ),
-        'menu_name'             => _x( 'Banco de talentos', 'Nome do menu' ),
+        'menu_name'             => _x( 'Talentos', 'Nome do menu' ),
         'add_new'               => _x( 'Adicionar Novo', 'Novo item' ),
         'add_new_item'          => __( 'Adicionar Novo Talento' ),
         'edit_item'             => __( 'Editar Talento' ),
@@ -38,6 +38,7 @@ function register_talent_bank() {
         'hierarchical'        => false,
         'menu_position'       => 5,
         'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields' ),
+        'menu_icon'           => 'dashicons-star-filled',
     );
 
     // Registrando o tipo de post "Banco de talentos"

@@ -74,7 +74,8 @@ function custom_talent_bank_column_content( $column, $post_id ) {
             break;
         case 'presentation_document':
             $attachment_id = get_field( 'presentation_document', $post_id );
-            echo wp_get_attachment_link( $attachment_id );
+            $attachment_url = wp_get_attachment_url( $attachment_id );
+            echo $attachment_url ? '<a href="' . $attachment_url . '" target="_blank">' . $attachment_url . '</a>' : 'No attachment';
             break;
         default:
             // Lidar com outras colunas, se necessário

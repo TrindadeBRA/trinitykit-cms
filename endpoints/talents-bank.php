@@ -76,15 +76,15 @@ function add_talent( $request ) {
         if ( isset( $_FILES['presentation_document'] ) && !empty( $_FILES['presentation_document'] ) ) {
             $file = $_FILES['presentation_document'];
 
-            // Upload do arquivo
+            // Realizando o upload do arquivo e associando-o ao post
             $attachment_id = media_handle_upload( 'presentation_document', $post_id );
 
             // Verificando se o upload foi bem-sucedido
             if ( is_wp_error( $attachment_id ) ) {
-                return $attachment_id;
+                return new WP_Error( 'upload_error', $attachment_id->get_error_message() );
             }
 
-            // Anexando o arquivo ao post
+            // Atualizando o post com o ID do arquivo anexado
             update_post_meta( $post_id, 'presentation_document', $attachment_id );
         }
     } else {

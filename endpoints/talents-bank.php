@@ -56,55 +56,46 @@ add_action( 'rest_api_init', function () {
     ));
 });
 
+// Função para adicionar um talento
 function add_talent( $request ) {
-    // Verificando se os campos necessários estão presentes
-    $required_fields = array( 'full_name', 'email', 'cellphone', 'presentation_document' );
-    foreach ( $required_fields as $field ) {
-        if ( empty( $request[$field] ) ) {
-            return new WP_Error( 'missing_field', 'O campo ' . $field . ' é obrigatório.' );
+    $params = $request->get_params(); // Obtendo os parâmetros da requisição
+
+    // Verificar se os campos necessários estão presentes
+    if ( isset( $params['full_name'] ) && isset( $params['email'] ) && isset( $params['cellphone'] ) && isset( $params['presentation_document'] ) ) {
+
+        // Criar um novo post do tipo talent_bank
+        $post_data = array(
+            'post_title'    => $params['full_name'], // Título do post
+            'post_type'     => 'talent_bank', // Tipo do post
+            'post_status'   => 'publish', // Status do post
+        );
+
+        // Inserir o post no banco de dados
+        $post_id = wp_insert_post( $post_data );
+
+        // Verificar se o post foi criado com sucesso
+        if ( ! is_wp_error( $post_id ) ) {
+
+            // Salvar o arquivo de apresentação (presentation_document) no WordPress
+            $file_id = media_handle_upload( 'presentation_document', 0 );
+
+            // Verificar se o upload do arquivo foi bem sucedido
+            if ( ! is_wp_error( $file_id ) ) {
+
+                // Associar o arquivo ao post recém-criado
+                update_post_meta( $post_id, 'presentation_document', $file_id );
+
+                // Retornar uma resposta de sucesso
+                return new WP_REST_Response( array( 'message' => 'Talent added successfully.' ), 200 );
+            } else {
+                // Se houver um erro no upload do arquivo, excluir o post criado
+                wp_delete_post( $post_id, true );
+                return new WP_Error( 'upload_error', 'Failed to upload presentation document.', array( 'status' => 500 ) );
+            }
+        } else {
+            return new WP_Error( 'post_error', 'Failed to create talent post.', array( 'status' => 500 ) );
         }
+    } else {
+        return new WP_Error( 'missing_fields', 'One or more required fields are missing.', array( 'status' => 400 ) );
     }
-
-    // Obtendo os parâmetros da requisição
-    $params = $request->get_params(); 
-
-    // Criando um novo post
-    $post_data = array(
-        'post_title'    => sanitize_text_field( $params['full_name'] ), // Sanitizando o título do post
-        'post_type'     => 'talent_bank', // Tipo de post
-        'post_status'   => 'publish', // Publicar o post imediatamente
-    );
-
-    // Inserindo o post no banco de dados
-    $post_id = wp_insert_post( $post_data );
-
-    // Verificando se o post foi criado com sucesso
-    if ( is_wp_error( $post_id ) ) {
-        return new WP_Error( 'post_creation_error', 'Erro ao criar o post.' );
-    }
-
-    // Verificando se o arquivo de documento de apresentação foi enviado
-    if ( isset( $_FILES['presentation_document'] ) && !empty( $_FILES['presentation_document'] ) ) {
-        $file = $_FILES['presentation_document'];
-
-        // Verificando se o upload do arquivo foi bem-sucedido
-        if ( $file['error'] !== UPLOAD_ERR_OK ) {
-            return new WP_Error( 'upload_error', 'Erro ao fazer upload do arquivo.' );
-        }
-
-        // Realizando o upload do arquivo e associando-o ao post
-        $attachment_id = media_handle_upload( 'presentation_document', $post_id );
-
-        // Verificando se o upload foi bem-sucedido
-        if ( is_wp_error( $attachment_id ) ) {
-            return new WP_Error( 'upload_error', $attachment_id->get_error_message() );
-        }
-
-        // Atualizando o post com o ID do arquivo anexado
-        update_post_meta( $post_id, 'presentation_document', $attachment_id );
-    }
-
-    // Retornando a ID do post recém-criado
-    return $post_id;
 }
-

@@ -59,37 +59,45 @@ add_action( 'rest_api_init', function () {
 function add_talent( $request ) {
     $params = $request->get_params(); // Obtendo os parâmetros da requisição
 
-    // Criando um array com os dados do post
-    $postarr = array(
-        'post_title'    => sanitize_text_field( $params['nome_completo'] ), // Sanitizando e definindo o título do post
-        'post_status'   => 'publish',
-        'post_type'     => 'talent_bank'
-    );
+    // Verificando se o arquivo foi enviado
+    if ( isset( $_FILES['presentation_document'] ) ) {
+        $file = $_FILES['presentation_document'];
 
-    // Inserindo o post e obtendo o ID
-    $post_id = wp_insert_post( $postarr );
+        // Realizando o upload do arquivo
+        $attachment_id = media_handle_upload( 'presentation_document', 0 );
 
-    if ( is_wp_error( $post_id ) ) {
-        return new WP_Error( 'error', 'Erro ao criar o post', array( 'status' => 500 ) );
+        if ( is_wp_error( $attachment_id ) ) {
+            // Em caso de erro no upload do arquivo, você pode tratar o erro aqui
+            return new WP_Error( 'error', 'Erro ao fazer upload do arquivo', array( 'status' => 500 ) );
+        }
+
+        // Criando um array com os dados do post
+        $postarr = array(
+            'post_title'    => sanitize_text_field( $params['nome_completo'] ), // Sanitizando e definindo o título do post
+            'post_status'   => 'publish',
+            'post_type'     => 'talent_bank'
+        );
+
+        // Inserindo o post e obtendo o ID
+        $post_id = wp_insert_post( $postarr );
+
+        if ( is_wp_error( $post_id ) ) {
+            // Em caso de erro na criação do post, você pode tratar o erro aqui
+            return new WP_Error( 'error', 'Erro ao criar o post', array( 'status' => 500 ) );
+        }
+
+        // Salvando os campos personalizados usando ACF
+        update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
+        update_field( 'email', sanitize_email( $params['email'] ), $post_id );
+        update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
+
+        // Associando o arquivo ao post
+        update_field( 'presentation_document', $attachment_id, $post_id );
+
+        // Retornando uma resposta da API REST
+        return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
+    } else {
+        // Se nenhum arquivo foi enviado, retorne um erro
+        return new WP_Error( 'error', 'Nenhum arquivo enviado', array( 'status' => 400 ) );
     }
-
-    // Salvando os campos personalizados usando ACF
-    update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
-    update_field( 'email', sanitize_email( $params['email'] ), $post_id );
-    update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
-
-    // Realizando o upload do arquivo
-    $file = $_FILES['presentation_document'];
-    $attachment_id = media_handle_upload( 'presentation_document', $post_id );
-
-    if ( is_wp_error( $attachment_id ) ) {
-        // Em caso de erro no upload do arquivo, você pode tratar o erro aqui
-        return new WP_Error( 'error', 'Erro ao fazer upload do arquivo', array( 'status' => 500 ) );
-    }
-
-    // Associando o arquivo ao post
-    update_field( 'presentation_document', $attachment_id, $post_id );
-
-    // Retornando uma resposta da API REST
-    return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
 }

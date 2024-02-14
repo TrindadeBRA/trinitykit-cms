@@ -56,39 +56,6 @@ add_action( 'rest_api_init', function () {
 });
 
 // Função para adicionar um talento
-// function add_talent( $request ) {
-
-//     $params = $request->get_params(); // Obtendo os parâmetros da requisição
-
-//     // Criando um array com os dados do post
-//     $postarr = array(
-//         'post_title'    => sanitize_text_field( $params['nome_completo'] ), // Sanitizando e definindo o título do post
-//         'post_status'   => 'publish',
-//         'post_type'     => 'talent_bank'
-//     );
-
-//     // Inserindo o post e obtendo o ID
-//     $post_id = wp_insert_post( $postarr );
-
-//     // Salvando os campos personalizados usando ACF
-//     update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
-//     update_field( 'email', sanitize_email( $params['email'] ), $post_id );
-//     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
-
-//     // Salvando o arquivo de apresentação (CV)
-//     if (!empty($_FILES['presentation_document']['name'])) {
-//         $file = wp_upload_bits($_FILES['presentation_document']['name'], null, file_get_contents($_FILES['presentation_document']['tmp_name']));
-//         if ($file['error'] == '') {
-//             update_field('presentation_document', $file['url'], $post_id);
-//         }
-//     }
-
-//     // Retornando uma resposta da API REST
-//     return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
-// }
-
-
-// Função para adicionar um talento
 function add_talent( $request ) {
     $params = $request->get_params(); // Obtendo os parâmetros da requisição
 
@@ -102,28 +69,27 @@ function add_talent( $request ) {
     // Inserindo o post e obtendo o ID
     $post_id = wp_insert_post( $postarr );
 
+    if ( is_wp_error( $post_id ) ) {
+        return new WP_Error( 'error', 'Erro ao criar o post', array( 'status' => 500 ) );
+    }
+
     // Salvando os campos personalizados usando ACF
     update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
     update_field( 'email', sanitize_email( $params['email'] ), $post_id );
     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
-    // Salvando o arquivo de apresentação (CV)
-    if (!empty($_FILES['presentation_document']['name'])) {
-        $file_name = $_FILES['presentation_document']['name'];
-        $file_tmp_name = $_FILES['presentation_document']['tmp_name'];
-        $file_type = $_FILES['presentation_document']['type'];
-        $file_size = $_FILES['presentation_document']['size'];
-        $file_error = $_FILES['presentation_document']['error'];
+    // Verificando se o arquivo foi enviado
+    if ( isset( $_FILES['presentation_document'] ) ) {
+        $file = $_FILES['presentation_document'];
+        $file_name = sanitize_file_name( $file['name'] );
+        $upload_dir = wp_upload_dir();
 
-        if ($file_error === 0) {
-            $upload_dir = wp_upload_dir();
-            $file_dest_path = $upload_dir['path'] . '/' . $file_name;
+        // Movendo o arquivo para o diretório de uploads
+        $file_path = $upload_dir['path'] . '/' . $file_name;
+        move_uploaded_file( $file['tmp_name'], $file_path );
 
-            if (move_uploaded_file($file_tmp_name, $file_dest_path)) {
-                $file_url = $upload_dir['url'] . '/' . $file_name;
-                update_field('presentation_document', $file_url, $post_id);
-            }
-        }
+        // Atualizando o campo ACF 'presentation_document'
+        update_field( 'presentation_document', $file_path, $post_id );
     }
 
     // Retornando uma resposta da API REST

@@ -77,15 +77,15 @@ function add_talent( $request ) {
             $file = $_FILES['presentation_document'];
 
             // Upload do arquivo
-            $upload = wp_upload_bits( $file['name'], null, file_get_contents( $file['tmp_name'] ) );
+            $attachment_id = media_handle_upload( 'presentation_document', $post_id );
 
             // Verificando se o upload foi bem-sucedido
-            if ( !empty( $upload['error'] ) ) {
-                return new WP_Error( 'upload_error', $upload['error'] );
+            if ( is_wp_error( $attachment_id ) ) {
+                return $attachment_id;
             }
 
-            // Adicionando o arquivo como metadado ao post
-            update_post_meta( $post_id, 'presentation_document', $upload );
+            // Anexando o arquivo ao post
+            update_post_meta( $post_id, 'presentation_document', $attachment_id );
         }
     } else {
         return new WP_Error( 'post_creation_error', 'Erro ao criar o post.' );

@@ -79,7 +79,7 @@ function add_talent( $request ) {
     update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
 
     // Verificando se o arquivo foi enviado
-    if ( isset( $_FILES['presentation_document'] ) ) {
+    if ( isset( $_FILES['presentation_document'] ) && $_FILES['presentation_document']['error'] == UPLOAD_ERR_OK ) {
         $file = $_FILES['presentation_document'];
         $file_name = sanitize_file_name( $file['name'] );
         $upload_dir = wp_upload_dir();
@@ -90,6 +90,9 @@ function add_talent( $request ) {
 
         // Atualizando o campo ACF 'presentation_document'
         update_field( 'presentation_document', $file_path, $post_id );
+    } else {
+        // Se o arquivo não foi enviado ou ocorreu um erro no upload, você pode tratar isso aqui
+        return new WP_Error( 'error', 'Erro ao fazer upload do arquivo', array( 'status' => 500 ) );
     }
 
     // Retornando uma resposta da API REST

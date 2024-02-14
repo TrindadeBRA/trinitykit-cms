@@ -46,23 +46,21 @@ function register_talent_bank() {
 add_action( 'init', 'register_talent_bank' );
 
 
-
-
-// Adicionando uma rota de API REST para adicionar talentos
-add_action( 'rest_api_init', function () {
-    register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(
-        'methods' => 'POST',
-        'callback' => 'add_talent', // Chama a função add_talent quando esta rota é acessada
-    ));
-});
-
 function add_talent( $request ) {
+    // Verificando se os campos necessários estão presentes
+    $required_fields = array( 'full_name', 'email', 'cellphone', 'presentation_document' );
+    foreach ( $required_fields as $field ) {
+        if ( empty( $request[$field] ) ) {
+            return new WP_Error( 'missing_field', 'O campo ' . $field . ' é obrigatório.' );
+        }
+    }
+
     // Obtendo os parâmetros da requisição
     $params = $request->get_params(); 
 
     // Criando um novo post
     $post_data = array(
-        'post_title'    => $params['full_name'], // Usando o nome completo como título do post
+        'post_title'    => sanitize_text_field( $params['full_name'] ), // Sanitizando o título do post
         'post_type'     => 'talent_bank', // Tipo de post
         'post_status'   => 'publish', // Publicar o post imediatamente
     );
@@ -71,24 +69,29 @@ function add_talent( $request ) {
     $post_id = wp_insert_post( $post_data );
 
     // Verificando se o post foi criado com sucesso
-    if ( !is_wp_error( $post_id ) ) {
-        // Verificando se o arquivo de documento de apresentação foi enviado
-        if ( isset( $_FILES['presentation_document'] ) && !empty( $_FILES['presentation_document'] ) ) {
-            $file = $_FILES['presentation_document'];
-
-            // Realizando o upload do arquivo e associando-o ao post
-            $attachment_id = media_handle_upload( 'presentation_document', $post_id );
-
-            // Verificando se o upload foi bem-sucedido
-            if ( is_wp_error( $attachment_id ) ) {
-                return new WP_Error( 'upload_error', $attachment_id->get_error_message() );
-            }
-
-            // Atualizando o post com o ID do arquivo anexado
-            update_post_meta( $post_id, 'presentation_document', $attachment_id );
-        }
-    } else {
+    if ( is_wp_error( $post_id ) ) {
         return new WP_Error( 'post_creation_error', 'Erro ao criar o post.' );
+    }
+
+    // Verificando se o arquivo de documento de apresentação foi enviado
+    if ( isset( $_FILES['presentation_document'] ) && !empty( $_FILES['presentation_document'] ) ) {
+        $file = $_FILES['presentation_document'];
+
+        // Verificando se o upload do arquivo foi bem-sucedido
+        if ( $file['error'] !== UPLOAD_ERR_OK ) {
+            return new WP_Error( 'upload_error', 'Erro ao fazer upload do arquivo.' );
+        }
+
+        // Realizando o upload do arquivo e associando-o ao post
+        $attachment_id = media_handle_upload( 'presentation_document', $post_id );
+
+        // Verificando se o upload foi bem-sucedido
+        if ( is_wp_error( $attachment_id ) ) {
+            return new WP_Error( 'upload_error', $attachment_id->get_error_message() );
+        }
+
+        // Atualizando o post com o ID do arquivo anexado
+        update_post_meta( $post_id, 'presentation_document', $attachment_id );
     }
 
     // Retornando a ID do post recém-criado

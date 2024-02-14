@@ -1,6 +1,4 @@
 <?php
-// Adicione este código ao seu arquivo functions.php do tema ou a um plugin
-
 // Função para registrar o tipo de post "Banco de talentos"
 function register_talent_bank() {
     $labels = array(
@@ -47,6 +45,9 @@ function register_talent_bank() {
 }
 add_action( 'init', 'register_talent_bank' );
 
+
+
+
 // Adicionando uma rota de API REST para adicionar talentos
 add_action( 'rest_api_init', function () {
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(
@@ -55,52 +56,41 @@ add_action( 'rest_api_init', function () {
     ));
 });
 
-// Função para adicionar um talento
 function add_talent( $request ) {
-    $params = $request->get_params(); // Obtendo os parâmetros da requisição
+    // Obtendo os parâmetros da requisição
+    $params = $request->get_params(); 
 
-    // Verificando se o arquivo foi enviado
-    if ( isset( $_FILES['presentation_document'] ) ) {
-        $file = $_FILES['presentation_document'];
+    // Criando um novo post
+    $post_data = array(
+        'post_title'    => $params['full_name'], // Usando o nome completo como título do post
+        'post_type'     => 'talent_bank', // Tipo de post
+        'post_status'   => 'publish', // Publicar o post imediatamente
+    );
 
-        // Realizando o upload do arquivo
-        $attachment_id = media_handle_upload( 'presentation_document', 0 );
+    // Inserindo o post no banco de dados
+    $post_id = wp_insert_post( $post_data );
 
-        if ( is_wp_error( $attachment_id ) ) {
-            // Em caso de erro no upload do arquivo, você pode tratar o erro aqui
-            return new WP_Error( 'error', 'Erro ao fazer upload do arquivo', array( 'status' => 500 ) );
+    // Verificando se o post foi criado com sucesso
+    if ( !is_wp_error( $post_id ) ) {
+        // Verificando se o arquivo de documento de apresentação foi enviado
+        if ( isset( $_FILES['presentation_document'] ) && !empty( $_FILES['presentation_document'] ) ) {
+            $file = $_FILES['presentation_document'];
+
+            // Upload do arquivo
+            $upload = wp_upload_bits( $file['name'], null, file_get_contents( $file['tmp_name'] ) );
+
+            // Verificando se o upload foi bem-sucedido
+            if ( !empty( $upload['error'] ) ) {
+                return new WP_Error( 'upload_error', $upload['error'] );
+            }
+
+            // Adicionando o arquivo como metadado ao post
+            update_post_meta( $post_id, 'presentation_document', $upload );
         }
-
-        // Criando um array com os dados do post
-        $postarr = array(
-            'post_title'    => sanitize_text_field( $params['nome_completo'] ), // Sanitizando e definindo o título do post
-            'post_status'   => 'publish',
-            'post_type'     => 'talent_bank'
-        );
-
-        // Inserindo o post e obtendo o ID
-        $post_id = wp_insert_post( $postarr );
-
-        if ( is_wp_error( $post_id ) ) {
-            // Em caso de erro na criação do post, você pode tratar o erro aqui
-            return new WP_Error( 'error', 'Erro ao criar o post', array( 'status' => 500 ) );
-        }
-
-        $file = $_FILES['presentation_document'];
-        $attachment_id = media_handle_upload( $file, 0 );
-
-        // Salvando os campos personalizados usando ACF
-        update_field( 'full_name', sanitize_text_field( $params['nome_completo'] ), $post_id );
-        update_field( 'email', sanitize_email( $params['email'] ), $post_id );
-        update_field( 'cellphone', sanitize_text_field( $params['telefone'] ), $post_id );
-
-        // Associando o arquivo ao post
-        // update_field( 'presentation_document', $attachment_id, $post_id );
-
-        // Retornando uma resposta da API REST
-        return new WP_REST_Response( array( 'message' => 'Talento criado com sucesso' ), 200 );
     } else {
-        // Se nenhum arquivo foi enviado, retorne um erro
-        return new WP_Error( 'error', 'Nenhum arquivo enviado', array( 'status' => 400 ) );
+        return new WP_Error( 'post_creation_error', 'Erro ao criar o post.' );
     }
+
+    // Retornando a ID do post recém-criado
+    return $post_id;
 }

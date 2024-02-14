@@ -48,6 +48,45 @@ add_action( 'init', 'register_talent_bank' );
 
 
 
+// Adiciona colunas personalizadas à tela de listagem do post type talent_bank
+function custom_talent_bank_columns( $columns ) {
+    // Adiciona colunas personalizadas
+    $columns['full_name'] = 'Full Name';
+    $columns['email'] = 'Email';
+    $columns['cellphone'] = 'Cellphone';
+    $columns['presentation_document'] = 'Presentation Document';
+
+    return $columns;
+}
+add_filter( 'manage_talent_bank_posts_columns', 'custom_talent_bank_columns' );
+
+// Exibe o conteúdo das colunas personalizadas
+function custom_talent_bank_column_content( $column, $post_id ) {
+    switch ( $column ) {
+        case 'full_name':
+            echo get_field( 'full_name', $post_id );
+            break;
+        case 'email':
+            echo get_field( 'email', $post_id );
+            break;
+        case 'cellphone':
+            echo get_field( 'cellphone', $post_id );
+            break;
+        case 'presentation_document':
+            $attachment_id = get_field( 'presentation_document', $post_id );
+            echo wp_get_attachment_link( $attachment_id );
+            break;
+        default:
+            // Lidar com outras colunas, se necessário
+            break;
+    }
+}
+add_action( 'manage_talent_bank_posts_custom_column', 'custom_talent_bank_column_content', 10, 2 );
+
+
+
+
+
 // Adicionando uma rota de API REST para adicionar talentos
 add_action( 'rest_api_init', function () {
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(

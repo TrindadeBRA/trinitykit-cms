@@ -9,7 +9,7 @@ function register_talent_bank() {
         'add_new_item'          => __( 'Adicionar Novo Talento' ),
         'edit_item'             => __( 'Editar Talento' ),
         'view_item'             => __( 'Ver Talento' ),
-        'all_items'             => __( 'Todos os Talentos' ),
+        'all_items'             => __( 'Banco de Talentos' ),
         'search_items'          => __( 'Procurar Talentos' ),
         'not_found'             => __( 'Nenhum Talento encontrado' ),
         'not_found_in_trash'    => __( 'Nenhum Talento encontrado na lixeira' ),

@@ -1,5 +1,13 @@
 <?php
-// Função para registrar o tipo de post "Banco de talentos"
+
+/**
+ * Registers the custom post type "Talent Bank".
+ *
+ * This function registers a custom post type called "Talent Bank" with custom labels and arguments.
+ *
+ * @since 1.0.0
+ */
+
 function register_talent_bank() {
     $labels = array(
         'name'                  => _x( 'Banco de talentos', 'Nome do tipo de post' ),
@@ -40,29 +48,20 @@ function register_talent_bank() {
         'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields' ),
         'menu_icon'           => 'dashicons-star-filled',
     );
-
-    // Registrando o tipo de post "Banco de talentos"
     register_post_type( 'talent_bank', $args );
 }
 add_action( 'init', 'register_talent_bank' );
 
-
-
-// Adiciona colunas personalizadas à tela de listagem do post type talent_bank
 function custom_talent_bank_columns( $columns ) {
-    // Adiciona colunas personalizadas
     $columns['full_name'] = 'Nome';
     $columns['email'] = 'Email';
     $columns['cellphone'] = 'Celular';
     $columns['presentation_document'] = 'Documento anexado';
     unset( $columns['author'] );
-
-
     return $columns;
 }
 add_filter( 'manage_talent_bank_posts_columns', 'custom_talent_bank_columns' );
 
-// Exibe o conteúdo das colunas personalizadas
 function custom_talent_bank_column_content( $column, $post_id ) {
     switch ( $column ) {
         case 'full_name':
@@ -86,32 +85,44 @@ function custom_talent_bank_column_content( $column, $post_id ) {
 }
 add_action( 'manage_talent_bank_posts_custom_column', 'custom_talent_bank_column_content', 10, 2 );
 
+/**
+ * Registers a custom REST API route to add a talent to the Talent Bank.
+ *
+ * This function registers a custom REST API route to handle the addition of a talent to the Talent Bank.
+ * The route accepts POST requests and triggers the 'talent_bank_add' callback function.
+ *
+ * @since 1.0.0
+ */
 
-
-
-
-// Adicionando uma rota de API REST para adicionar talentos
 add_action( 'rest_api_init', function () {
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(
         'methods' => 'POST',
-        'callback' => 'handle_work_with_us_form_submission',
+        'callback' => 'talent_bank_add',
     ));
 });
 
+/**
+ * Callback function to add a talent to the Talent Bank.
+ *
+ * This function is called when the custom REST API route for adding a talent is accessed via a POST request.
+ * It extracts parameters from the request, creates a new talent post, handles file uploads for the presentation document,
+ * and updates custom fields for the talent. It returns a JSON response indicating success or failure.
+ *
+ * @since 1.0.0
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ * @return WP_REST_Response|WP_Error A response object indicating success or failure.
+ */
 
-
-
-
-
-function handle_work_with_us_form_submission($request) {
+function talent_bank_add($request) {
     $params = $request->get_params();
 
-    // Extrair os parâmetros do request
+    // Extract parameters from the request
     $name = sanitize_text_field($params['name']);
     $email = sanitize_email($params['email']);
     $phone = sanitize_text_field($params['phone']);
 
-    // Criar o post
+    // Create the post
     $post_id = wp_insert_post(array(
         'post_title'   => $name,
         'post_content' => '',
@@ -119,7 +130,7 @@ function handle_work_with_us_form_submission($request) {
         'post_type'    => 'talent_bank',
     ));
 
-    // Manipular o upload da imagem e definir como imagem destacada
+    // Handle the upload of the presentation document and set it as the featured image
     if (!empty($_FILES['presentation_document'])) {
         require_once(ABSPATH . 'wp-admin/includes/image.php');
         require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -132,11 +143,13 @@ function handle_work_with_us_form_submission($request) {
         }
     }
 
+    // Update custom fields for the talent
     update_field( 'full_name', $name, $post_id );
     update_field( 'email', $email, $post_id );
     update_field( 'cellphone', $phone, $post_id );
     update_field( 'presentation_document', $attachment_id, $post_id );
 
+    // Return success or failure response
     if ($post_id) {
         return new WP_REST_Response(array('success' => true), 200);
     } else {

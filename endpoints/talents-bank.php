@@ -32,6 +32,7 @@ function register_talent_bank() {
         'items_list_navigation' => _x( 'Navegação lista de Talentos', 'Talento' ),
         'items_list'            => _x( 'Lista de Talentos', 'Talento' ),
     );
+    
 
     $args = array(
         'labels'              => $labels,

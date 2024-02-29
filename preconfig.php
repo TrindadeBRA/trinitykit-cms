@@ -34,6 +34,8 @@ function create_initial_pages() {
         create_page_once($page['title'], $page['slug']);
     }
 
+
+    // TODO Ajustar esse import do ACF, embora esteja funcionando os campos nao aparecem no painel do ACF, apenas nas paginas
     if (function_exists("acf_add_local_field_group")) {
         $acf_json_data = locate_template("/acf-export/acf-export.json");
         $custom_fields = $acf_json_data ? json_decode(file_get_contents($acf_json_data), true) : array();

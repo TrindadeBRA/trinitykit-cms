@@ -45,6 +45,8 @@ function create_initial_pages() {
         }
     }
 
+    // TODO Criar funcao para criar o MENU e vincular as paginas
+
 
     // Mark that the pages have been created
     update_option('pages_created', 'created');

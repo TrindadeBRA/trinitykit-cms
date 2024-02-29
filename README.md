@@ -2,13 +2,12 @@
 
 Bem-vindo ao tema Trinity Kit CMS para WordPress! Este README fornece instruções básicas para configurar e personalizar o tema.
 
-## Plugins Necessários
+## Passo 01 - Instalar e ativar plugins necessários
 
-1. Really Simple SSL
-2. Advanced Custom Fields PRO
-2. Yoast SEO
+1. Instale e ative o plugin "Advanced Custom Fields PRO". (É necessário ter a versão PRO, pois usamos os campos que são liberados apenas na versão PRO)
+2. Instale e ative o plugin "Yoast SEO". (Versão FREE)
 
-## Instalação
+## Passo 02 - Ativando o nosso tema
 
 1. Faça o download do tema Trinity Kit CMS.
 2. Acesse o painel de administração do WordPress.
@@ -16,6 +15,8 @@ Bem-vindo ao tema Trinity Kit CMS para WordPress! Este README fornece instruçõ
 4. Clique em "Adicionar Novo" e depois em "Enviar Tema".
 5. Selecione o arquivo zip do tema que você baixou e clique em "Instalar Agora".
 6. Após a instalação, ative o tema.
+
+Ao ativar o tema irá ser criado as páginas iniciais e importados os ACFs necessários.
 
 ## Configuração Inicial
 

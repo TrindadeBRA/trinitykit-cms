@@ -2,6 +2,7 @@
 define('themeUrl', get_template_directory_uri());
 define('siteUrl', get_site_url());
 
+require_once get_template_directory() . '/preconfig.php';
 require_once get_template_directory() . '/endpoints/menu.php';
 require_once get_template_directory() . '/endpoints/settings.php';
 require_once get_template_directory() . '/endpoints/page-slug.php';

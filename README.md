@@ -1,4 +1,4 @@
-# README - Tema Trinity Kit CMS
+# README - Trinity Kit - WordPress e Next.js
 
 Bem-vindo ao tema Trinity Kit CMS para WordPress! Este README fornece instruções básicas para configurar e personalizar o tema.
 

@@ -16,10 +16,6 @@ function create_initial_pages() {
             'slug' => 'home'
         ),
         array(
-            'title' => 'Nosso Time',
-            'slug' => 'nosso-time',
-        ),
-        array(
             'title' => 'Trabalhe Conosco',
             'slug' => 'trabalhe-conosco',
         ),

@@ -8,7 +8,6 @@ require_once get_template_directory() . '/endpoints/settings.php';
 require_once get_template_directory() . '/endpoints/page-slug.php';
 require_once get_template_directory() . '/endpoints/latest-posts.php';
 require_once get_template_directory() . '/endpoints/talents-bank.php';
-require_once get_template_directory() . '/endpoints/jwt-token.php';
 
 // Add suporte a imagens destacadas
 add_theme_support('post-thumbnails');

@@ -131,7 +131,15 @@ function talent_bank_add($request) {
     $phone = isset($params['phone']) ? sanitize_text_field($params['phone']) : '';
 
     if (empty($name)) {
-        return new WP_Error('invalid_data', __('Invalid data provided'), array('status' => 400));
+        return new WP_Error('invalid_name_data', __('Name field cannot be empty'), array('status' => 400));
+    }
+    
+    if (empty($email)) {
+        return new WP_Error('invalid_email_data', __('Email field cannot be empty'), array('status' => 400));
+    }
+    
+    if (empty($phone)) {
+        return new WP_Error('invalid_phone_data', __('Phone field cannot be empty'), array('status' => 400));
     }
 
     // Create the post

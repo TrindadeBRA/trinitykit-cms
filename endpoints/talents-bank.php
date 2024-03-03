@@ -126,9 +126,13 @@ function talent_bank_add($request) {
     $params = $request->get_params();
 
     // Extract parameters from the request
-    $name = sanitize_text_field($params['name']);
-    $email = sanitize_email($params['email']);
-    $phone = sanitize_text_field($params['phone']);
+    $name = isset($params['name']) ? sanitize_text_field($params['name']) : '';
+    $email = isset($params['email']) ? sanitize_email($params['email']) : '';
+    $phone = isset($params['phone']) ? sanitize_text_field($params['phone']) : '';
+
+    if (empty($name)) {
+        return new WP_Error('invalid_data', __('Invalid data provided'), array('status' => 400));
+    }
 
     // Create the post
     $post_id = wp_insert_post(array(

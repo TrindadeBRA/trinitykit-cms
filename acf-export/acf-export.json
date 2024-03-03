@@ -1,5 +1,108 @@
 [
     {
+        "key": "group_65e4d1d6cb8e9",
+        "title": "Banco de Talentos",
+        "fields": [
+            {
+                "key": "field_65e4d1d7ff1d2",
+                "label": "Nome Completo",
+                "name": "full_name",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_65e4d1efff1d3",
+                "label": "Email",
+                "name": "email",
+                "aria-label": "",
+                "type": "email",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_65e4d20cff1d4",
+                "label": "Telefone \/ Celular",
+                "name": "cellphone",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_65e4d226ff1d5",
+                "label": "Documento Anexado",
+                "name": "presentation_document",
+                "aria-label": "",
+                "type": "file",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "talent_bank"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0
+    },
+    {
         "key": "group_65e09d8eed1e9",
         "title": "Blog",
         "fields": [
@@ -7,6 +110,7 @@
                 "key": "field_65e09d8f015b4",
                 "label": "Tíitulo",
                 "name": "title",
+                "aria-label": "",
                 "type": "text",
                 "instructions": "",
                 "required": 0,
@@ -26,6 +130,7 @@
                 "key": "field_65e09d8f0160d",
                 "label": "Subtítulo",
                 "name": "subtitle",
+                "aria-label": "",
                 "type": "text",
                 "instructions": "",
                 "required": 0,
@@ -69,6 +174,7 @@
                 "key": "field_65e09309da961",
                 "label": "Hero",
                 "name": "hero",
+                "aria-label": "",
                 "type": "group",
                 "instructions": "",
                 "required": 0,
@@ -84,6 +190,7 @@
                         "key": "field_65e09333da962",
                         "label": "Tíitulo",
                         "name": "title",
+                        "aria-label": "",
                         "type": "text",
                         "instructions": "",
                         "required": 0,
@@ -103,6 +210,7 @@
                         "key": "field_65e09357da963",
                         "label": "Descrição",
                         "name": "description",
+                        "aria-label": "",
                         "type": "text",
                         "instructions": "",
                         "required": 0,
@@ -122,6 +230,7 @@
                         "key": "field_65e096754b7a6",
                         "label": "Texto do Botão",
                         "name": "cta_text",
+                        "aria-label": "",
                         "type": "text",
                         "instructions": "",
                         "required": 0,
@@ -141,6 +250,7 @@
                         "key": "field_65e0936cda964",
                         "label": "URL do Botão",
                         "name": "cta_url",
+                        "aria-label": "",
                         "type": "url",
                         "instructions": "",
                         "required": 0,

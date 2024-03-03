@@ -83,7 +83,7 @@ function my_theme_add_custom_fields($wp_customize) {
         'section' => 'my_custom_settings_section',
         'settings' => 'frontend_app_url',
         'type' => 'url',
-        'description' => __('URL da aplicação frontend. Esta URL vai ser usada para o SEO do frontend.', 'my-theme'),
+        'description' => __('URL da aplicação frontend. Esta URL vai ser usada para o SEO do frontend e para permitir as requisições do tipo POST apenas deste dominio.', 'my-theme'),
 
     ));
 

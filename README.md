@@ -32,6 +32,10 @@ Ao ativar o tema irá ser criado as páginas iniciais e importados os ACFs neces
 
 1. Entre em todas as páginas criadas, e preencha todos os ACFs. (/wp-admin/edit.php?post_type=page)
 
+## Passo 06 - Buildando a aplicação
+
+1. Clique no botão, isso irá dar restart no ultimo job bem sucedido, pode acompanhar pelo github-actions do repositorio do front. (/wp-admin/admin.php?page=my-admin-page)
+
 
 
 ## Contribuição
@@ -40,4 +44,4 @@ Este tema é de código aberto e aceita contribuições. Se você encontrar bugs
 
 ---
 
-Esperamos que você aproveite o uso do tema Trinity Kit CMS para WordPress! Se você tiver alguma dúvida ou precisar de suporte adicional, não hesite em nos contatar.
+Esperamos que você aproveite o uso do tema Trinity Kit! Se você tiver alguma dúvida ou precisar de suporte adicional, não hesite em nos contatar. [LucasTrindade.Dev](https://lucastrindade.dev)

@@ -152,6 +152,25 @@ function talent_bank_add($request) {
 
     // Handle the upload of the presentation document and set it as the featured image
     if (!empty($_FILES['presentation_document'])) {
+
+        // Verifique se o arquivo foi enviado com sucesso
+        if ($_FILES['presentation_document']['error'] !== UPLOAD_ERR_OK) {
+            return new WP_Error('upload_error', __('Failed to upload file'), array('status' => 500));
+        }
+
+        // Verifique o tipo de arquivo permitido
+        $allowed_types = array('pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png');
+        $file_type = wp_check_filetype($_FILES['presentation_document']['name']);
+        if (!in_array($file_type['ext'], $allowed_types)) {
+            return new WP_Error('invalid_file_type', __('Invalid file type'), array('status' => 400));
+        }
+
+        // Verifique o tamanho máximo do arquivo (em bytes)
+        $max_file_size = 5 * 1024 * 1024; // 5 MB
+        if ($_FILES['presentation_document']['size'] > $max_file_size) {
+            return new WP_Error('file_too_large', __('File size exceeds maximum limit'), array('status' => 400));
+        }
+
         require_once(ABSPATH . 'wp-admin/includes/image.php');
         require_once(ABSPATH . 'wp-admin/includes/file.php');
         require_once(ABSPATH . 'wp-admin/includes/media.php');

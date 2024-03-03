@@ -18,12 +18,11 @@ Bem-vindo ao tema Trinity Kit CMS para WordPress! Este README fornece instruçõ
 
 Ao ativar o tema irá ser criado as páginas iniciais e importados os ACFs necessários.
 
-## Configuração Inicial
+## Passo 03 - Configurando o WordPress
 
-1. Crie o menu da aplicação. (/wp-admin/nav-menus.php).
-2. Insira o menu criado na posição do menu principal. (/wp-admin/nav-menus.php?action=locations).
-3. Crie a página "home" em páginas.
-4. Crie os ACFs necessários da home.
+1. Crie o menu da aplicação e insira o menu criado na posição do menu principal. (/wp-admin/nav-menus.php?action=locations).
+2. Adicionar os campos em "TrinityKit Settings". (/wp-admin/customize.php?return=%2Fwp-admin%2Ftheme-editor.php)
+
 
 ## Contribuição
 

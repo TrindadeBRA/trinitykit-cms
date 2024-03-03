@@ -1,8 +1,8 @@
 <?php
 
 function generate_jwt_token() {
-    $secret_key = JWT_AUTH_SECRET_KEY;
-
+    $secret_key = defined('JWT_AUTH_SECRET_KEY') ? JWT_AUTH_SECRET_KEY : 'chave_padrao_secreta';
+    
     $issued_at = time();
     $expiration_time = $issued_at + (60 * 15); //15 Min
 

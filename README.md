@@ -4,8 +4,8 @@ Bem-vindo ao tema Trinity Kit CMS para WordPress! Este README fornece instruçõ
 
 ## Passo 01 - Instalando e ativando plugins necessários
 
-1. Instale e ative o plugin "Advanced Custom Fields". (Versão FREE)
-2. Instale e ative o plugin "Yoast SEO". (Versão FREE)
+1. Instale e ative o plugin [Advanced Custom Fields (ACF)](https://br.wordpress.org/plugins/advanced-custom-fields/). (Versão FREE)
+2. Instale e ative o plugin [Yoast SEO](https://br.wordpress.org/plugins/wordpress-seo/). (Versão FREE)
 
 ## Passo 02 - Instalando e ativando o nosso tema
 
@@ -21,7 +21,17 @@ Ao ativar o tema irá ser criado as páginas iniciais e importados os ACFs neces
 ## Passo 03 - Configurando o WordPress
 
 1. Crie o menu da aplicação e insira o menu criado na posição do menu principal. (/wp-admin/nav-menus.php?action=locations).
-2. Adicionar os campos em "TrinityKit Settings". (/wp-admin/customize.php?return=%2Fwp-admin%2Ftheme-editor.php)
+2. Adicionar os campos em "Identidade do site" e "TrinityKit Settings". (/wp-admin/customize.php?return=%2Fwp-admin%2Ftheme-editor.php)
+
+## Passo 04 - Configurando os secrets do repositorio do frontend
+
+1. Para o CI/CD do projeto é necessário adicionar 4 variaveis de ambiente, sendo elas: ```FTP_HOST```, ```FTP_LOGIN```, ```FTP_PASSWORD``` e ```WORDPRESS_URL```. (https://github.com/username/repo-namesettings/secrets/actions)
+2. No frontend, no arquivo ```.github/workflows/master.yml```, no parametro ```server-dir``` é necessário adicionar o path da pasta em que você deseja fazer upload do projeto. 
+
+## Passo 05 - Configurando os campos ACF nas páginas criadas
+
+1. Entre em todas as páginas criadas, e preencha todos os ACFs. (/wp-admin/edit.php?post_type=page)
+
 
 
 ## Contribuição

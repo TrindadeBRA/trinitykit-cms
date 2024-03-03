@@ -68,7 +68,7 @@ function my_theme_add_custom_fields($wp_customize) {
         'label' => __('WhatsApp URL', 'my-theme'),
         'section' => 'my_custom_settings_section',
         'settings' => 'whatsapp_url',
-        'description' => __('Entre com a URL do WhatsApp.', 'my-theme'),
+        'description' => __('Entre com a URL do WhatsApp. Esta URL vai ser inserida no botão "Contato →" no menu do frontend.', 'my-theme'),
         'type' => 'url',
     ));
 
@@ -83,7 +83,7 @@ function my_theme_add_custom_fields($wp_customize) {
         'section' => 'my_custom_settings_section',
         'settings' => 'frontend_app_url',
         'type' => 'url',
-        'description' => __('URL da aplicação frontend.', 'my-theme'),
+        'description' => __('URL da aplicação frontend. Esta URL vai ser usada para o SEO do frontend.', 'my-theme'),
 
     ));
 
@@ -98,7 +98,7 @@ function my_theme_add_custom_fields($wp_customize) {
         'section' => 'my_custom_settings_section',
         'settings' => 'github_user',
         'type' => 'text',
-        'description' => __('Github user do front.', 'my-theme'),
+        'description' => __('Seu usuário do Github. Este campo é utilizado para o CI/CD do projeto.', 'my-theme'),
 
     ));
 
@@ -109,11 +109,11 @@ function my_theme_add_custom_fields($wp_customize) {
     ));
 
     $wp_customize->add_control('github_repo', array(
-        'label' => __('Github Repo', 'my-theme'),
+        'label' => __('Github Repo Name', 'my-theme'),
         'section' => 'my_custom_settings_section',
         'settings' => 'github_repo',
         'type' => 'text',
-        'description' => __('Github repo do front.', 'my-theme'),
+        'description' => __('Slug do nome do projeto no repositório do GitHub. Este campo é utilizado para o CI/CD do projeto.', 'my-theme'),
 
     ));
 
@@ -124,11 +124,11 @@ function my_theme_add_custom_fields($wp_customize) {
     ));
 
     $wp_customize->add_control('github_token', array(
-        'label' => __('Github Token', 'my-theme'),
+        'label' => __('Personal access github Token', 'my-theme'),
         'section' => 'my_custom_settings_section',
         'settings' => 'github_token',
         'type' => 'text',
-        'description' => __('Github token do front.', 'my-theme'),
+        'description' => __('Token pessoal de acesso ao github. Pode ser gerado em: https://github.com/settings/tokens.  Este campo é utilizado para o CI/CD do projeto.', 'my-theme'),
 
     ));
 
@@ -143,7 +143,7 @@ function my_theme_add_custom_fields($wp_customize) {
         'section' => 'my_custom_settings_section',
         'settings' => 'google_analytics_id',
         'type' => 'text',
-        'description' => __('Entre com o seu Google Analytics ID Ex. G-XXXXXXX.', 'my-theme'),
+        'description' => __('Entre com o seu Google Analytics ID. Ex. G-XXXXXXX.', 'my-theme'),
     ));
 }
 add_action('customize_register', 'my_theme_add_custom_fields');

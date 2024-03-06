@@ -8,30 +8,37 @@
  * Method: GET
  */
 
-/**
- * Register Latest Posts Endpoint
- *
- * Registers the latest posts endpoint with WordPress REST API.
- */
 add_action('rest_api_init', 'register_latest_posts_endpoint');
 function register_latest_posts_endpoint() {
     register_rest_route('trinitykit/v1', '/latest-posts/', array(
         'methods' => 'GET',
         'callback' => 'get_latest_posts',
+        'args' => array(
+            'page' => array(
+                'default' => 1,
+                'sanitize_callback' => 'absint',
+            ),
+            'per_page' => array(
+                'default' => 3,
+                'sanitize_callback' => 'absint',
+            ),
+        ),
     ));
 }
-/**
- * Get Latest Posts
- *
- * Retrieves data about the latest 3 posts and prepares it for response.
- *
- * @return WP_REST_Response|WP_Error Response object containing latest posts data or error message.
- */
-function get_latest_posts() {
-    // Query the latest 3 posts
+
+function get_latest_posts($request) {
+    $params = $request->get_params();
+    $page = isset($params['page']) ? $params['page'] : 1;
+    $posts_per_page = isset($params['per_page']) ? $params['per_page'] : 3;
+
+    // Calculate offset
+    $offset = ($page - 1) * $posts_per_page;
+
+    // Query the latest posts with pagination
     $latest_posts_query = new WP_Query(array(
         'post_type' => 'post',
-        'posts_per_page' => 3,
+        'posts_per_page' => $posts_per_page,
+        'offset' => $offset,
         'orderby' => 'date',
         'order' => 'DESC',
     ));
@@ -65,22 +72,9 @@ function get_latest_posts() {
         $posts_data[] = $post_data;
     }
 
-    // Get the blog page
-    $blog_page = get_page_by_path('blog');
-    if (!$blog_page) {
-        return new WP_Error('not_found', 'Página com slug "blog" não encontrada.', array('status' => 404));
-    }
-    $post_id = $blog_page->ID;
-
-    // Get ACFs for the blog page
-    $acfs = get_fields($post_id);
-
     // Reset post data
     wp_reset_postdata();
 
-    // Return a REST response with the latest posts data and ACFs
-    return new WP_REST_Response(array(
-        'custom_fields' => $acfs,
-        'recent_posts' => $posts_data,
-    ), 200);
+    // Return a REST response with the latest posts data
+    return new WP_REST_Response($posts_data, 200);
 }

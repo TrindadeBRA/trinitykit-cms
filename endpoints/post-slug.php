@@ -69,7 +69,7 @@ function get_post_data($request) {
     $yoast_description = get_post_meta($post->ID, '_yoast_wpseo_metadesc', true);
 
     // Content
-    $post_content = get_post_field('post_content', $post_id);
+    $post_content = get_post_field('post_content', $post->ID);
     $rendered_content = apply_filters('the_content', $post_content);
     
     // Initialize an array to store post data

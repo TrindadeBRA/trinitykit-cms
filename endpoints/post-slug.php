@@ -36,13 +36,23 @@ function get_post_data($request) {
     // Get the post slug from the request parameters
     $slug = $request['slug'];
 
-    // Get the post by its slug
-    $post = get_page_by_path($slug, OBJECT, 'post');
+    // Query posts by slug
+    $args = array(
+        'name'        => $slug,
+        'post_type'   => 'post',
+        'post_status' => 'publish',
+        'numberposts' => 1
+    );
+
+    $posts = get_posts($args);
 
     // If post not found, return an error
-    if (!$post) {
+    if (empty($posts)) {
         return new WP_Error('no_post', 'Página não encontrada.', array('status' => 404));
     }
+
+    // Get the first post
+    $post = $posts[0];
 
     // Get author information
     $author_id = $post->post_author;
@@ -68,7 +78,6 @@ function get_post_data($request) {
         'categories' => array(),
     );
 
-
     // Add categories to post data
     foreach ($post_categories as $category) {
         $post_data['categories'][] = array(
@@ -80,7 +89,6 @@ function get_post_data($request) {
     // Get custom fields (ACFs) associated with the post
     $acf_fields = get_fields($post->ID);
 
-    
     // Add custom fields to the post data
     if ($acf_fields) {
         foreach ($acf_fields as $key => $value) {

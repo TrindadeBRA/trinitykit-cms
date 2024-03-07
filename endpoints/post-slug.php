@@ -64,11 +64,24 @@ function get_post_data($request) {
     // Get post categories
     $post_categories = get_the_category($post->ID);
 
+    // Get Yoast SEO data
+    $yoast_title = get_post_meta($post->ID, '_yoast_wpseo_title', true);
+    $yoast_description = get_post_meta($post->ID, '_yoast_wpseo_metadesc', true);
+
+    // If Yoast SEO data is empty, use default WordPress title and excerpt
+    if (empty($yoast_title)) {
+        $yoast_title = get_the_title($post->ID);
+    }
+    if (empty($yoast_description)) {
+        $yoast_description = get_the_excerpt($post->ID);
+    }
+
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
         'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
         'content' => apply_filters('the_content', $post->post_content),
+        'post_thumbnail_url' => get_the_post_thumbnail_url($post->ID),
         'date' => $post->post_date,
         'author' => array(
             'name' => $author_data->display_name,
@@ -76,6 +89,8 @@ function get_post_data($request) {
             'bio' => get_the_author_meta('description', $author_id),
         ),
         'categories' => array(),
+        'yoast_title' => $yoast_title,
+        'yoast_description' => $yoast_description,
     );
 
     // Add categories to post data

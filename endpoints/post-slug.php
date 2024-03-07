@@ -47,7 +47,7 @@ function get_post_data($request) {
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
-        'title' => get_the_title($post->ID),
+        'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
         'content' => apply_filters('the_content', $post->post_content),
         'date' => $post->post_date,
     );

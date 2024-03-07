@@ -80,6 +80,7 @@ function get_post_data($request) {
     // Get custom fields (ACFs) associated with the post
     $acf_fields = get_fields($post->ID);
 
+    
     // Add custom fields to the post data
     if ($acf_fields) {
         foreach ($acf_fields as $key => $value) {

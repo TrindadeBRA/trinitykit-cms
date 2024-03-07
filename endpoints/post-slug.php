@@ -67,7 +67,8 @@ function get_post_data($request) {
     // Get Yoast SEO data
     $yoast_title = get_post_meta($post->ID, '_yoast_wpseo_title', true);
     $yoast_description = get_post_meta($post->ID, '_yoast_wpseo_metadesc', true);
-    
+    $featured_image_url = get_the_post_thumbnail_url($post->ID);
+
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
@@ -80,9 +81,9 @@ function get_post_data($request) {
             'bio' => get_the_author_meta('description', $author_id),
         ),
         'categories' => array(),
-        'featured_image_url' => get_the_post_thumbnail_url($post->ID),
         'yoast_title' => $yoast_title,
         'yoast_description' => $yoast_description,
+        'featured_image_url' => $featured_image_url,
     );
 
     // Add categories to post data

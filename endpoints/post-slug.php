@@ -76,7 +76,7 @@ function get_post_data($request) {
     $post_data = array(
         'id' => $post->ID,
         'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
-        'excerpt' => html_entity_decode(get_the_excerpt($post->ID)),
+        'excerpt' => html_entity_decode(get_the_excerpt($post->ID), ENT_QUOTES, 'UTF-8'),
         'content' => $rendered_content,
         'date' => $post->post_date,
         'author' => array(

@@ -37,7 +37,7 @@ function get_post_data($request) {
     $slug = $request['slug'];
 
     // Get the post by its slug
-    $post = get_post_by_path($slug);
+    $post = get_page_by_path($slug, OBJECT, 'post');
 
     // If post not found, return an error
     if (!$post) {
@@ -65,3 +65,4 @@ function get_post_data($request) {
     // Return a REST response with the post data
     return new WP_REST_Response($post_data, 200);
 }
+

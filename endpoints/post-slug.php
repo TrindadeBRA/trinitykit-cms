@@ -86,7 +86,9 @@ function get_post_data($request) {
         }
     }
 
-    // Return a REST response with the post data
-    return new WP_REST_Response($post_data, 200);
-}
+    // Wrap the post data inside another array
+    $response = array($post_data);
 
+    // Return the wrapped post data
+    return $response;
+}

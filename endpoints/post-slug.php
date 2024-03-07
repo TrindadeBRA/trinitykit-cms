@@ -44,13 +44,37 @@ function get_post_data($request) {
         return new WP_Error('no_post', 'Página não encontrada.', array('status' => 404));
     }
 
+    // Get author information
+    $author_id = $post->post_author;
+    $author_data = get_userdata($author_id);
+
+    // Get author Gravatar
+    $author_avatar = get_avatar_url($author_id);
+
+    // Get post categories
+    $post_categories = get_the_category($post->ID);
+
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
         'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
         'content' => apply_filters('the_content', $post->post_content),
         'date' => $post->post_date,
+        'author' => array(
+            'name' => $author_data->display_name,
+            'avatar' => $author_avatar,
+            'bio' => get_the_author_meta('description', $author_id),
+        ),
+        'categories' => array(),
     );
+
+    // Add categories to post data
+    foreach ($post_categories as $category) {
+        $post_data['categories'][] = array(
+            'name' => $category->name,
+            'slug' => $category->slug,
+        );
+    }
 
     // Get custom fields (ACFs) associated with the post
     $acf_fields = get_fields($post->ID);

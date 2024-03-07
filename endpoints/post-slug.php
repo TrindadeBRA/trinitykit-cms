@@ -68,6 +68,7 @@ function get_post_data($request) {
         'categories' => array(),
     );
 
+
     // Add categories to post data
     foreach ($post_categories as $category) {
         $post_data['categories'][] = array(

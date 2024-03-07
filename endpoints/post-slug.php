@@ -67,17 +67,12 @@ function get_post_data($request) {
     // Get Yoast SEO data
     $yoast_title = get_post_meta($post->ID, '_yoast_wpseo_title', true);
     $yoast_description = get_post_meta($post->ID, '_yoast_wpseo_metadesc', true);
-
-    // Content
-    $post_content = get_post_field('post_content', $post->ID);
-    $rendered_content = apply_filters('the_content', $post_content);
     
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
         'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
-        'excerpt' => html_entity_decode(get_the_excerpt($post->ID), ENT_QUOTES, 'UTF-8'),
-        'content' => $rendered_content,
+        'content' => apply_filters('the_content', $post->post_content),
         'date' => $post->post_date,
         'author' => array(
             'name' => $author_data->display_name,

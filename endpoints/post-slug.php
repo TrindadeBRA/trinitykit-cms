@@ -86,6 +86,7 @@ function get_post_data($request) {
         );
     }
 
+    
     // Get custom fields (ACFs) associated with the post
     $acf_fields = get_fields($post->ID);
 

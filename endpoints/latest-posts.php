@@ -58,11 +58,13 @@ function get_latest_posts($request) {
     while ($latest_posts_query->have_posts()) {
         $latest_posts_query->the_post();
 
+        $content = html_entity_decode(wp_trim_words(get_the_content(), 30), ENT_QUOTES, 'UTF-8');
+
         // Get post data
         $post_data = array(
             'id' => get_the_ID(),
             'title' => get_the_title(),
-            'content' => wp_trim_words(get_the_content(), 30),
+            'content' => $content,
             'thumbnail_url' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
             'date' => get_the_date(),
             'category' => get_the_category()[0]->name,
@@ -74,6 +76,7 @@ function get_latest_posts($request) {
         // Add post data to the array
         $posts_data[] = $post_data;
     }
+
 
     // Get the blog page
     $blog_page = get_page_by_path('blog');

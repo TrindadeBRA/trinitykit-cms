@@ -89,8 +89,8 @@ function get_post_data($request) {
             'bio' => get_the_author_meta('description', $author_id),
         ),
         'categories' => array(),
-        'yoast_title' => $yoast_title,
-        'yoast_description' => $yoast_description,
+        'yoast_title' => html_entity_decode(wp_trim_words($yoast_title, 30), ENT_QUOTES, 'UTF-8'),
+        'yoast_description' => html_entity_decode(wp_trim_words($yoast_description, 200), ENT_QUOTES, 'UTF-8'),
     );
 
     // Add categories to post data

@@ -61,14 +61,15 @@ function get_latest_posts($request) {
         $contentFiltered = apply_filters('the_content', get_the_content());
         $content = html_entity_decode(wp_trim_words($contentFiltered, 30), ENT_QUOTES, 'UTF-8');
         $title = html_entity_decode(wp_trim_words(get_the_title(), 30), ENT_QUOTES, 'UTF-8');
-
+        $date = date_i18n('j \d\e F \d\e Y', strtotime(get_the_date()));
+        
         // Get post data
         $post_data = array(
             'id' => get_the_ID(),
             'title' => $title,
             'content' => $content,
             'thumbnail_url' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
-            'date' => get_the_date(),
+            'date' => $date,
             'category' => get_the_category()[0]->name,
             'author_name' => get_the_author_meta('display_name'),
             'author_photo' => get_avatar_url(get_the_author_meta('user_email')), 

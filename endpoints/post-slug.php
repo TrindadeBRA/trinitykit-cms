@@ -90,6 +90,7 @@ function get_post_data($request) {
         'content' => $content,
         'post_thumbnail_url' => get_the_post_thumbnail_url($post->ID),
         'date' => $post->post_date,
+        'slug' => $post->post_name,
         'author' => array(
             'name' => $author_data->display_name,
             'avatar' => $author_avatar,

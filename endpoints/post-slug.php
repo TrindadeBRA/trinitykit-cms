@@ -41,56 +41,55 @@ function get_post_data($request) {
         'name'        => $slug,
         'post_type'   => 'post',
         'post_status' => 'publish',
-        'numberposts' => 1
+        'posts_per_page' => 1
     );
 
-    $posts = get_posts($args);
+    $query = new WP_Query($args);
 
     // If post not found, return an error
-    if (empty($posts)) {
+    if (!$query->have_posts()) {
         return new WP_Error('no_post', 'Página não encontrada.', array('status' => 404));
     }
 
     // Get the first post
-    $post = $posts[0];
+    $query->the_post();
 
     // Get author information
-    $author_id = $post->post_author;
+    $author_id = get_the_author_meta('ID');
     $author_data = get_userdata($author_id);
 
     // Get author Gravatar
     $author_avatar = get_avatar_url($author_id);
 
     // Get post categories
-    $post_categories = get_the_category($post->ID);
+    $post_categories = get_the_category();
 
     // Get Yoast SEO data
-    $yoast_title = get_post_meta($post->ID, '_yoast_wpseo_title', true);
-    $yoast_description = get_post_meta($post->ID, '_yoast_wpseo_metadesc', true);
+    $yoast_title = get_post_meta(get_the_ID(), '_yoast_wpseo_title', true);
+    $yoast_description = get_post_meta(get_the_ID(), '_yoast_wpseo_metadesc', true);
 
     // If Yoast SEO data is empty, use default WordPress title and excerpt
     if (empty($yoast_title)) {
-        $yoast_title = get_the_title($post->ID);
+        $yoast_title = get_the_title();
     }
     if (empty($yoast_description)) {
-        $yoast_description = get_the_excerpt($post->ID);
+        $yoast_description = get_the_excerpt();
     }
 
-
-    // Obtenha o conteúdo do post
-    $post_content = get_post_field('post_content', $post->ID);
+    // Get the post content
+    $post_content = get_the_content();
 
     // Renderize o conteúdo (processando os shortcodes do ACF)
     $content = apply_filters('the_content', $post_content);
 
     // Initialize an array to store post data
     $post_data = array(
-        'id' => $post->ID,
-        'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
+        'id' => get_the_ID(),
+        'title' => html_entity_decode(get_the_title(), ENT_QUOTES, 'UTF-8'),
         'content' => $content,
-        'post_thumbnail_url' => get_the_post_thumbnail_url($post->ID),
-        'date' => $post->post_date,
-        'slug' => $post->post_name,
+        'post_thumbnail_url' => get_the_post_thumbnail_url(),
+        'date' => get_the_date(),
+        'slug' => $slug,
         'author' => array(
             'name' => $author_data->display_name,
             'avatar' => $author_avatar,
@@ -109,9 +108,8 @@ function get_post_data($request) {
         );
     }
 
-    
     // Get custom fields (ACFs) associated with the post
-    $acf_fields = get_fields($post->ID);
+    $acf_fields = get_fields();
 
     // Add custom fields to the post data
     if ($acf_fields) {
@@ -119,7 +117,9 @@ function get_post_data($request) {
             $post_data[$key] = $value;
         }
     }
-    
+
+    // Reset post data
+    wp_reset_postdata();
 
     // Wrap the post data inside another array
     $response = array($post_data);

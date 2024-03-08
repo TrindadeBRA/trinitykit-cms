@@ -78,7 +78,7 @@ function get_post_data($request) {
 
 
     // Obtenha o conteúdo do post
-    $post_content = get_post_field('post_content', $post_id);
+    $post_content = get_post_field('post_content', $post->ID);
 
     // Renderize o conteúdo (processando os shortcodes do ACF)
     $content = apply_filters('the_content', $post_content);

@@ -78,14 +78,16 @@ function get_post_data($request) {
 
 
     // Obtenha o conteúdo do post
-    $post_content = apply_filters('the_content', $post->post_content);
+    $post_content = get_post_field('post_content', $post->ID);
 
+    // Use do_shortcode para interpretar os shortcodes
+    $content = do_shortcode($post_content);
 
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
         'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
-        'content' => $post_content,
+        'content' => $content,
         'post_thumbnail_url' => get_the_post_thumbnail_url($post->ID),
         'date' => $post->post_date,
         'author' => array(

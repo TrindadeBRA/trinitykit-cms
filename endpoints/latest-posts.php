@@ -59,11 +59,12 @@ function get_latest_posts($request) {
         $latest_posts_query->the_post();
 
         $content = html_entity_decode(wp_trim_words(get_the_content(), 30), ENT_QUOTES, 'UTF-8');
+        $title = html_entity_decode(wp_trim_words(get_the_title(), 30), ENT_QUOTES, 'UTF-8');
 
         // Get post data
         $post_data = array(
             'id' => get_the_ID(),
-            'title' => get_the_title(),
+            'title' => $title,
             'content' => $content,
             'thumbnail_url' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
             'date' => get_the_date(),

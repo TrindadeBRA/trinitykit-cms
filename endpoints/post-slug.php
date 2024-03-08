@@ -100,6 +100,12 @@ function get_post_data($request) {
         'yoast_description' => html_entity_decode(wp_trim_words($yoast_description, 200), ENT_QUOTES, 'UTF-8'),
     );
 
+    // Get related posts
+    $related_posts = get_related_posts(get_the_ID());
+
+    // Add formatted related posts data to the 'related_posts' field
+    $post_data['related_posts'] = $related_posts;
+
     // Add categories to post data
     foreach ($post_categories as $category) {
         $post_data['categories'][] = array(
@@ -126,4 +132,63 @@ function get_post_data($request) {
 
     // Return the wrapped post data
     return $response;
+}
+
+function get_related_posts($post_id, $exclude_ids = array(), $count = 3) {
+    // Get post categories
+    $post_categories = get_the_category($post_id);
+
+    // Define an array to store related posts
+    $related_posts = array();
+
+    // Loop through each category of the post
+    foreach ($post_categories as $category) {
+        // Query related posts by category
+        $related_args = array(
+            'category_name' => $category->slug,
+            'post_type'     => 'post',
+            'post_status'   => 'publish',
+            'posts_per_page' => $count, // Get specified number of related posts
+            'post__not_in'  => array_merge(array($post_id), $exclude_ids), // Exclude the current post and any provided IDs to exclude
+        );
+
+        $related_query = new WP_Query($related_args);
+
+        // If related posts found, merge them into the $related_posts array
+        if ($related_query->have_posts()) {
+            $related_posts = array_merge($related_posts, $related_query->posts);
+        }
+    }
+
+    // If not enough related posts found, query random posts
+    if (count($related_posts) < $count) {
+        $remaining_count = $count - count($related_posts);
+        $random_args = array(
+            'post_type'     => 'post',
+            'post_status'   => 'publish',
+            'posts_per_page' => $remaining_count, // Calculate remaining posts needed
+            'orderby'       => 'rand',
+            'post__not_in'  => array_merge(array($post_id), wp_list_pluck($related_posts, 'ID'), $exclude_ids), // Exclude current post and already related posts
+        );
+
+        $random_query = new WP_Query($random_args);
+
+        // Merge random posts into the $related_posts array
+        $related_posts = array_merge($related_posts, $random_query->posts);
+    }
+
+    // Initialize an array to store formatted related post data
+    $formatted_related_posts = array();
+
+    // Loop through related posts and format their data
+    foreach ($related_posts as $related_post) {
+        $formatted_related_posts[] = array(
+            'id' => $related_post->ID,
+            'title' => html_entity_decode($related_post->post_title, ENT_QUOTES, 'UTF-8'),
+            'post_thumbnail_url' => get_the_post_thumbnail_url($related_post->ID),
+            // Add any other fields you want to include from related posts
+        );
+    }
+
+    return $formatted_related_posts;
 }

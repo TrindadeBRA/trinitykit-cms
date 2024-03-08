@@ -37,6 +37,8 @@
     if ($posts_query->have_posts()) {
         while ($posts_query->have_posts()) {
             $posts_query->the_post();
+            // Define $post global para permitir o acesso às propriedades do post
+            global $post;
             // Adiciona o slug do post atual ao array
             $post_slugs[] = $post->post_name;
         }

@@ -81,7 +81,7 @@ function get_post_data($request) {
     $post_content = get_post_field('post_content', $post->ID);
 
     // Use do_shortcode para interpretar os shortcodes
-    $content = do_shortcode($post_content);
+    $content = apply_filters('the_content', $post_content);
 
     // Initialize an array to store post data
     $post_data = array(

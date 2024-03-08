@@ -26,8 +26,8 @@
      ));
  }
 
- 
- function get_latest_posts($request) {
+
+function get_latest_posts($request) {
     // Obtenha os parâmetros da solicitação
     $params = $request->get_params();
     $page = isset($params['page']) ? $params['page'] : 1;
@@ -101,6 +101,8 @@
         'recent_posts' => $posts_data,
     ), 200);
 }
+
+
 add_action('rest_api_init', 'register_total_pages_endpoint');
 function register_total_pages_endpoint() {
     register_rest_route('trinitykit/v1', '/total-pages/', array(

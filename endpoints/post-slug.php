@@ -76,16 +76,11 @@ function get_post_data($request) {
         $yoast_description = get_the_excerpt($post->ID);
     }
 
+
     // Obtenha o conteúdo do post
-    $post_content = get_post_field('post_content', $post->ID);
-    
-    // Verifique se há shortcodes do ACF no conteúdo do post
-    if (strpos($post_content, '[acf') !== false) {
-        // Se houver shortcodes do ACF, use do_shortcode para interpretá-los
-        $post_content = do_shortcode($post_content);
-    }
-    
-    // Use apply_filters para processar outros filtros, como the_content
+    $post_content = get_post_field('post_content', $post_id);
+
+    // Renderize o conteúdo (processando os shortcodes do ACF)
     $content = apply_filters('the_content', $post_content);
 
     // Initialize an array to store post data

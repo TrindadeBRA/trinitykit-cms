@@ -76,11 +76,23 @@ function get_post_data($request) {
         $yoast_description = get_the_excerpt($post->ID);
     }
 
+
+    // Obtenha o conteúdo do post
+    $post_content = get_post_field('post_content', $post->ID);
+
+    // Use a função do ACF para processar os shortcodes
+    $post_content_with_acf = apply_filters('acf_the_content', $post_content);
+
+    // Renderize o conteúdo com os shortcodes do ACF e outros filtros do WordPress
+    $content = apply_filters('the_content', $post_content_with_acf);
+
+    // $content = html_entity_decode(wp_trim_words($contentFiltered, 30), ENT_QUOTES, 'UTF-8');
+
     // Initialize an array to store post data
     $post_data = array(
         'id' => $post->ID,
         'title' => html_entity_decode(get_the_title($post->ID), ENT_QUOTES, 'UTF-8'),
-        'content' => apply_filters('the_content', $post->post_content),
+        'content' => $content,
         'post_thumbnail_url' => get_the_post_thumbnail_url($post->ID),
         'date' => $post->post_date,
         'author' => array(

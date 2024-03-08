@@ -18,13 +18,11 @@
 
 
  function get_all_slugs($request) {
-    // Define o número de posts a serem recuperados
-    $num_posts = 5;
 
     // Obtém os últimos posts
     $args = array(
         'post_type' => 'post',
-        'posts_per_page' => $num_posts,
+        'posts_per_page' => -1,
         'order' => 'DESC',
         'orderby' => 'date',
     );
@@ -47,6 +45,6 @@
 
     // Retorna uma resposta REST com os slugs dos últimos posts
     return new WP_REST_Response(array(
-        'last_five_slugs' => $post_slugs,
+        'slugs' => $post_slugs,
     ), 200);
 }

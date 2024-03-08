@@ -19,10 +19,12 @@
 
  function get_all_slugs($request) {
 
+    $count = 15;
+
     // Obtém os últimos posts
     $args = array(
         'post_type' => 'post',
-        'posts_per_page' => -1,
+        'posts_per_page' => $count,
         'order' => 'DESC',
         'orderby' => 'date',
     );

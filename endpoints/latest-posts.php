@@ -71,8 +71,8 @@ function get_latest_posts($request) {
         // Adicione os dados do post ao array
         $posts_data[] = array(
             'id' => $post_id,
-            'title' => html_entity_decode($title, ENT_QUOTES, 'UTF-8'),
-            'content' => html_entity_decode(apply_filters('the_content', $content), ENT_QUOTES, 'UTF-8'),
+            'title' => html_entity_decode(wp_trim_words($title, 30), ENT_QUOTES, 'UTF-8'),
+            'content' => html_entity_decode(wp_trim_words(apply_filters('the_content', $content), 30), ENT_QUOTES, 'UTF-8'),
             'thumbnail_url' => $thumbnail_url,
             'date' => $date,
             'category' => !empty($categories) ? $categories[0]->name : '',

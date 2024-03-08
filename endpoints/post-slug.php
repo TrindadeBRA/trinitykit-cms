@@ -78,7 +78,7 @@ function get_post_data($request) {
 
 
     // Obtenha o conteúdo do post
-    $post_content = get_post_field('post_content', $post->ID);
+    $post_content = apply_filters('the_content', $post->post_content);
 
 
     // Initialize an array to store post data

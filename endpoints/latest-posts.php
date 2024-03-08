@@ -27,16 +27,16 @@
  }
 
  
-function get_latest_posts($request) {
-
+ function get_latest_posts($request) {
+    // Obtenha os parâmetros da solicitação
     $params = $request->get_params();
     $page = isset($params['page']) ? $params['page'] : 1;
     $posts_per_page = isset($params['per_page']) ? $params['per_page'] : 3;
 
-    // Calculate offset
+    // Calcule o deslocamento
     $offset = ($page - 1) * $posts_per_page;
 
-    // Query the latest 3 posts
+    // Consulte os últimos posts
     $latest_posts_query = new WP_Query(array(
         'post_type' => 'post',
         'posts_per_page' => $posts_per_page,
@@ -45,62 +45,62 @@ function get_latest_posts($request) {
         'order' => 'DESC',
     ));
 
-
-    // If no posts found, return an error
+    // Se nenhum post for encontrado, retorne um erro
     if (!$latest_posts_query->have_posts()) {
         return new WP_Error('no_posts', 'Nenhum post encontrado.', array('status' => 404));
     }
 
-    // Initialize an array to store posts data
+    // Inicialize um array para armazenar os dados dos posts
     $posts_data = array();
 
-    // Loop through each post and add its data to the array
+    // Loop através de cada post e adicione seus dados ao array
     while ($latest_posts_query->have_posts()) {
         $latest_posts_query->the_post();
 
-        $contentFiltered = apply_filters('the_content', get_the_content());
-        $content = html_entity_decode(wp_trim_words($contentFiltered, 30), ENT_QUOTES, 'UTF-8');
-        $title = html_entity_decode(wp_trim_words(get_the_title(), 30), ENT_QUOTES, 'UTF-8');
-        $date = date_i18n('j \d\e F \d\e Y', strtotime(get_the_date()));
-        
-        // Get post data
-        $post_data = array(
-            'id' => get_the_ID(),
-            'title' => $title,
-            'content' => $content,
-            'thumbnail_url' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
-            'date' => $date,
-            'category' => get_the_category()[0]->name,
-            'author_name' => get_the_author_meta('display_name'),
-            'author_photo' => get_avatar_url(get_the_author_meta('user_email')), 
-            'slug' => basename(get_permalink()),
-        );
+        // Obtenha os dados do post
+        $post_id = get_the_ID();
+        $title = get_the_title();
+        $content = get_the_content();
+        $thumbnail_url = get_the_post_thumbnail_url($post_id, 'large');
+        $date = get_the_date('j \d\e F \d\e Y');
+        $categories = get_the_category();
+        $author_name = get_the_author_meta('display_name');
+        $author_photo = get_avatar_url(get_the_author_meta('user_email')); 
+        $slug = basename(get_permalink());
 
-        // Add post data to the array
-        $posts_data[] = $post_data;
+        // Adicione os dados do post ao array
+        $posts_data[] = array(
+            'id' => $post_id,
+            'title' => html_entity_decode($title, ENT_QUOTES, 'UTF-8'),
+            'content' => html_entity_decode(apply_filters('the_content', $content), ENT_QUOTES, 'UTF-8'),
+            'thumbnail_url' => $thumbnail_url,
+            'date' => $date,
+            'category' => !empty($categories) ? $categories[0]->name : '',
+            'author_name' => $author_name,
+            'author_photo' => $author_photo,
+            'slug' => $slug,
+        );
     }
 
-
-    // Get the blog page
+    // Obtenha a página do blog
     $blog_page = get_page_by_path('blog');
     if (!$blog_page) {
         return new WP_Error('not_found', 'Página com slug "blog" não encontrada.', array('status' => 404));
     }
     $post_id = $blog_page->ID;
 
-    // Get ACFs for the blog page
+    // Obtenha os ACFs para a página do blog
     $acfs = get_fields($post_id);
 
-    // Reset post data
+    // Restaure os dados originais do post
     wp_reset_postdata();
 
-    // Return a REST response with the latest posts data and ACFs
+    // Retorne uma resposta REST com os dados dos últimos posts e os ACFs
     return new WP_REST_Response(array(
         'custom_fields' => $acfs,
         'recent_posts' => $posts_data,
     ), 200);
 }
-
 add_action('rest_api_init', 'register_total_pages_endpoint');
 function register_total_pages_endpoint() {
     register_rest_route('trinitykit/v1', '/total-pages/', array(

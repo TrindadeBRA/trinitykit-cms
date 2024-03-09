@@ -183,12 +183,21 @@ function get_related_posts($post_id, $exclude_ids = array(), $count = 3) {
 
     // Loop through related posts and format their data
     foreach ($related_posts as $related_post) {
+
+        $author_id = $related_post->post_author;
+        $author_data = get_userdata($author_id);
+        $author_avatar = get_avatar_url($author_id);
+
         $formatted_related_posts[] = array(
             'id' => $related_post->ID,
             'title' => html_entity_decode($related_post->post_title, ENT_QUOTES, 'UTF-8'),
+            'content' => html_entity_decode(wp_trim_words(apply_filters('the_content', $related_post->post_content), 30), ENT_QUOTES, 'UTF-8'), // Using post_content for summary
             'post_thumbnail_url' => get_the_post_thumbnail_url($related_post->ID),
-            // Add any other fields you want to include from related posts
-        );
+            'date' => get_the_date('', $related_post->ID), // Pass the post ID for date
+            'author' => array(
+                'name' => $author_data->display_name,
+                'avatar_url' => $author_avatar,
+            ),
     }
 
     return $formatted_related_posts;

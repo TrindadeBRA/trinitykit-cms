@@ -37,18 +37,6 @@ add_action('wp_head', 'add_favicon');
 // Desativar notificações de plugins desatualizados
 add_filter('pre_site_transient_update_plugins', '__return_null');
 
-add_action('after_setup_theme', 'register_custom_sizes');
-function register_custom_sizes() {
-    add_image_size('square_size', 500, 500, true);
-}
-add_filter('image_size_names_choose', 'adicionar_tamanho_personalizado_ao_seletor_de_midia');
-
-function adicionar_tamanho_personalizado_ao_seletor_de_midia($sizes) {
-    $new_sizes = array(
-        'square_size' => __( 'Tamanho Square' ),
-    );
-    return array_merge($sizes, $new_sizes);
-}
 
 
 

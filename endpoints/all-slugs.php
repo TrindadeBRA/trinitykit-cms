@@ -19,7 +19,7 @@
 
  function get_all_slugs($request) {
 
-    $count = 15;
+    $count = -1;
 
     // Obtém os últimos posts
     $args = array(

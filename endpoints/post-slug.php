@@ -183,11 +183,12 @@ function get_related_posts($post_id, $exclude_ids = array(), $count = 3) {
 
     // Loop through related posts and format their data
     foreach ($related_posts as $related_post) {
-
+        // Get author information
         $author_id = $related_post->post_author;
         $author_data = get_userdata($author_id);
         $author_avatar = get_avatar_url($author_id);
-
+    
+        // Add related post data to the formatted array
         $formatted_related_posts[] = array(
             'id' => $related_post->ID,
             'title' => html_entity_decode($related_post->post_title, ENT_QUOTES, 'UTF-8'),
@@ -198,6 +199,7 @@ function get_related_posts($post_id, $exclude_ids = array(), $count = 3) {
                 'name' => $author_data->display_name,
                 'avatar_url' => $author_avatar,
             ),
+        );
     }
 
     return $formatted_related_posts;

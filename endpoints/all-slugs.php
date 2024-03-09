@@ -21,6 +21,7 @@
 
     $count = -1;
 
+    
     // Obtém os últimos posts
     $args = array(
         'post_type' => 'post',

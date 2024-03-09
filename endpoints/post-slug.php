@@ -187,7 +187,17 @@ function get_related_posts($post_id, $exclude_ids = array(), $count = 3) {
         $author_id = $related_post->post_author;
         $author_data = get_userdata($author_id);
         $author_avatar = get_avatar_url($author_id);
-    
+
+        // Get post categories
+        $post_categories = get_the_category($related_post->ID);
+        $categories = array();
+        foreach ($post_categories as $category) {
+            $categories[] = array(
+                'name' => $category->name,
+                'slug' => $category->slug,
+            );
+        }
+
         // Add related post data to the formatted array
         $formatted_related_posts[] = array(
             'id' => $related_post->ID,
@@ -199,8 +209,11 @@ function get_related_posts($post_id, $exclude_ids = array(), $count = 3) {
                 'name' => $author_data->display_name,
                 'avatar_url' => $author_avatar,
             ),
+            'categories' => $categories,
+            'slug' => get_post_field('post_name', $related_post->ID), // Get post slug
         );
     }
+
 
     return $formatted_related_posts;
 }

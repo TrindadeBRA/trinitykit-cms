@@ -37,6 +37,12 @@ add_action('wp_head', 'add_favicon');
 // Desativar notificações de plugins desatualizados
 add_filter('pre_site_transient_update_plugins', '__return_null');
 
+add_action('after_setup_theme', 'register_custom_sizes');
+function register_custom_sizes() {
+    add_image_size('square_size', 500, 500, true);
+}
+
+
 
 
 

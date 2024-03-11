@@ -31,11 +31,16 @@ function get_custom_settings_data() {
         'description' => get_bloginfo('description'),
         'whatsapp_url' => get_theme_mod('whatsapp_url'),
         'frontend_app_url' => get_theme_mod('frontend_app_url'),
-        'favicon_url' => site_icon_url(), // URL do favicon
+        'favicon_url' => site_icon_url(),
         'site_icon_url' => get_site_icon_url(), // URL do ícone do site
         'og_image_url' => get_post_meta(get_the_ID(), '_yoast_wpseo_opengraph-image', true), // URL da imagem Open Graph
         'google_analytics_id' => get_theme_mod('google_analytics_id', 'G-XXXXXXX'),
     );
+
+    if (is_front_page() && has_post_thumbnail()) {
+        $thumbnail_src = wp_get_attachment_image_src(get_post_thumbnail_id(), 'full');
+        $settings['og_image_url'] = $thumbnail_src[0]; // URL da imagem destacada da homepage
+    }
 
     return rest_ensure_response($settings);
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Register a custom REST API endpoint for fetching theme settings.
  *
@@ -19,8 +18,8 @@ function custom_theme_api_endpoint() {
  * Callback function to retrieve theme settings.
  *
  * This function retrieves various theme settings such as site title, description,
- * WhatsApp URL, URL da aplicação frontend, and Google Analytics ID, and returns
- * them as a JSON response.
+ * WhatsApp URL, URL da aplicação frontend, favicon URL, site icon URL, og:image URL,
+ * and Google Analytics ID, and returns them as a JSON response.
  *
  * @since 1.0.0
  *
@@ -40,6 +39,37 @@ function get_custom_settings_data() {
 
     return rest_ensure_response($settings);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Register the custom API endpoint

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Register a custom REST API endpoint for fetching theme settings.
  *
@@ -18,8 +19,8 @@ function custom_theme_api_endpoint() {
  * Callback function to retrieve theme settings.
  *
  * This function retrieves various theme settings such as site title, description,
- * WhatsApp URL, URL da aplicação frontend, favicon URL, site icon URL, og:image URL,
- * and Google Analytics ID, and returns them as a JSON response.
+ * WhatsApp URL, URL da aplicação frontend, and Google Analytics ID, and returns
+ * them as a JSON response.
  *
  * @since 1.0.0
  *
@@ -31,50 +32,19 @@ function get_custom_settings_data() {
         'description' => get_bloginfo('description'),
         'whatsapp_url' => get_theme_mod('whatsapp_url'),
         'frontend_app_url' => get_theme_mod('frontend_app_url'),
-        'favicon_url' => site_icon_url(),
-        'site_icon_url' => get_site_icon_url(), // URL do ícone do site
-        'og_image_url' => get_post_meta(get_the_ID(), '_yoast_wpseo_opengraph-image', true), // URL da imagem Open Graph
         'google_analytics_id' => get_theme_mod('google_analytics_id', 'G-XXXXXXX'),
+        'favicon_url' => get_site_icon_url(),
     );
 
-    if (is_front_page() && has_post_thumbnail()) {
-        $thumbnail_src = wp_get_attachment_image_src(get_post_thumbnail_id(), 'full');
+    $home_page = get_page_by_path('home');
+
+    if ($home_page && has_post_thumbnail($home_page->ID)) {
+        $thumbnail_src = wp_get_attachment_image_src(get_post_thumbnail_id($home_page->ID), 'full');
         $settings['og_image_url'] = $thumbnail_src[0]; // URL da imagem destacada da homepage
     }
 
     return rest_ensure_response($settings);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Register the custom API endpoint

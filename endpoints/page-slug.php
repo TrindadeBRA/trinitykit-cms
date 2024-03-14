@@ -52,6 +52,33 @@ function get_page_data($request) {
         'date' => $page->post_date,
     );
 
+    // Check if Yoast SEO plugin is active
+    if (class_exists('WPSEO_Meta')) {
+        // Get Yoast meta description
+        $yoast_description = get_post_meta($page->ID, '_yoast_wpseo_metadesc', true);
+
+        // If Yoast description is not set, use page excerpt
+        if (empty($yoast_description)) {
+            $yoast_description = $page->post_excerpt;
+        }
+
+        $page_data['yoast_description'] = $yoast_description;
+
+        // Get Yoast title
+        $yoast_title = WPSEO_Meta::get_value('title', $page->ID);
+
+        // If Yoast title is not set, use page title
+        if (empty($yoast_title)) {
+            $yoast_title = get_the_title($page->ID);
+        }
+
+        $page_data['yoast_title'] = $yoast_title;
+    } else {
+        // If Yoast SEO plugin is not active, set default values
+        $page_data['yoast_title'] = get_the_title($page->ID);
+        $page_data['yoast_description'] = $page->post_excerpt; // Using page excerpt if Yoast is not active
+    }
+
     // Get custom fields (ACFs) associated with the page
     $acf_fields = get_fields($page->ID);
 

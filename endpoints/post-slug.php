@@ -121,16 +121,6 @@ function get_post_data($request) {
         );
     }
 
-    // Get custom fields (ACFs) associated with the post
-    $acf_fields = get_fields();
-
-    // Add custom fields to the post data
-    if ($acf_fields) {
-        foreach ($acf_fields as $key => $value) {
-            $post_data[$key] = $value;
-        }
-    }
-
     // Reset post data
     wp_reset_postdata();
 

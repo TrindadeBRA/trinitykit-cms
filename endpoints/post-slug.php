@@ -101,6 +101,12 @@ function get_post_data($request) {
         'yoast_description' => html_entity_decode(wp_trim_words($yoast_description, 200), ENT_QUOTES, 'UTF-8'),
     );
 
+    // Get related ACF fields
+    $book_component_acf = get_book_component_acf(get_the_ID());
+
+    // Add related ACF fields to the post data
+    $post_data['book_component'] = $book_component_acf;
+
     // Get related posts
     $related_posts = get_related_posts();
 
@@ -133,6 +139,16 @@ function get_post_data($request) {
 
     // Return the wrapped post data
     return $response;
+}
+
+function get_book_component_acf($post_id) {
+    $acf_fields = array(
+        'nome_do_livro' => get_field('nome_do_livro', $post_id),
+        'autor_do_livro' => get_field('autor_do_livro', $post_id),
+        'capa_do_livro' => get_field('capa_do_livro', $post_id),
+        'link_afiliado' => get_field('link_afiliado', $post_id)
+    );
+    return $acf_fields;
 }
 
 function get_related_posts() {

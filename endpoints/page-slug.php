@@ -61,7 +61,12 @@ function get_page_data($request) {
         $yoast_title = get_the_title($page->ID);
     }
     if (empty($yoast_description)) {
-        $yoast_description = $page->post_excerpt;
+        // Sanitize content and limit to 150 characters with ellipsis
+        $sanitized_content = wp_strip_all_tags($page->post_content);
+        $yoast_description = mb_substr($sanitized_content, 0, 150);
+        if (mb_strlen($sanitized_content) > 150) {
+            $yoast_description .= '...';
+        }
     }
 
     $page_data['yoast_title'] = $yoast_title;

@@ -132,13 +132,19 @@ function add_custom_post_preview_button($actions, $post) {
 // Adiciona o botão na listagem de posts
 add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);
 
-// Função para adicionar o botão "Visualizar no Front" no topbar do post
-function add_custom_post_preview_button_topbar($post) {
+// Função para adicionar o botão "Visualizar no Front" na barra de administração
+function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
+    if (!is_singular('post')) { // Verifica se estamos visualizando um post
+        return;
+    }
+
     // Obtém o URL do frontend do aplicativo do tema mod
     $frontend_app_url = get_theme_mod('frontend_app_url');
 
     // Verifica se o URL do frontend do aplicativo está definido e se é um valor válido
     if ($frontend_app_url && filter_var($frontend_app_url, FILTER_VALIDATE_URL)) {
+        global $post;
+
         // Constrói o novo link de visualização com base no URL do frontend, slug e a parte "/preview/blog/"
         $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post->post_name;
 
@@ -146,12 +152,19 @@ function add_custom_post_preview_button_topbar($post) {
         $button_text = 'Visualizar no Front';
 
         // Constrói o HTML do botão de visualização
-        $preview_button = '<div class="misc-pub-section misc-pub-custom-preview"><a href="' . esc_url($preview_link) . '" target="_blank">' . esc_html($button_text) . '</a></div>';
+        $args = array(
+            'id' => 'custom_preview_button',
+            'title' => $button_text,
+            'href' => esc_url($preview_link),
+            'meta' => array(
+                'target' => '_blank'
+            )
+        );
 
-        // Exibe o botão de visualização no topbar do post
-        echo $preview_button;
+        // Adiciona o botão de visualização à barra de administração
+        $wp_admin_bar->add_node($args);
     }
 }
 
-// Adiciona o botão no topbar do post
-add_action('post_submitbox_misc_actions', 'add_custom_post_preview_button_topbar');
+// Adiciona o botão na barra de administração
+add_action('admin_bar_menu', 'add_custom_post_preview_button_admin_bar', 100);

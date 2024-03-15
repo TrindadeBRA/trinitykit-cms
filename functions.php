@@ -120,7 +120,7 @@ function add_custom_post_preview_button($actions, $post) {
         $button_text = 'Visualizar no Front';
 
         // Constrói o HTML do botão de visualização
-        $preview_button = '<a href="' . esc_url($preview_link) . '" class="">' . esc_html($button_text) . '</a>';
+        $preview_button = '<a href="' . esc_url($preview_link) . '" target="_blank">' . esc_html($button_text) . '</a>';
 
         // Adiciona o botão de visualização ao array de ações
         $actions['custom_preview'] = $preview_button;

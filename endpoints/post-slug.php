@@ -40,7 +40,8 @@ function get_post_data($request) {
     $args = array(
         'name'        => $slug,
         'post_type'   => 'post',
-        'posts_per_page' => 1
+        'posts_per_page' => 1,
+        'post_status'   => array( 'publish', 'draft' ),
     );
 
     $query = new WP_Query($args);

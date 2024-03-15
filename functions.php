@@ -149,3 +149,37 @@ function preview_on_admin_bar($wp_admin_bar){
     }
 }
 add_action('admin_bar_menu', 'preview_on_admin_bar', 999);
+
+
+function pick_your_book_html_github_shortcode() {
+    // URL do arquivo HTML no GitHub
+    $github_url = 'https://raw.githubusercontent.com/TrindadeBRA/pick-your-book/master/index.html';
+
+    // Obtém o conteúdo do arquivo HTML
+    $html_content = wp_remote_get( $github_url );
+
+    // Verifica se a solicitação foi bem-sucedida
+    if ( ! is_wp_error( $html_content ) && wp_remote_retrieve_response_code( $html_content ) === 200 ) {
+        return wp_remote_retrieve_body( $html_content );
+    } else {
+        return 'Não foi possível carregar o conteúdo HTML do GitHub.';
+    }
+}
+add_shortcode( 'pick-your-book-html-github', 'pick_your_book_html_github_shortcode' );
+
+
+function most_read_book_by_year_html_github_shortcode() {
+    // URL do arquivo HTML no GitHub
+    $github_url = 'https://raw.githubusercontent.com/TrindadeBRA/most-read-book-by-year/master/index.html';
+
+    // Obtém o conteúdo do arquivo HTML
+    $html_content = wp_remote_get( $github_url );
+
+    // Verifica se a solicitação foi bem-sucedida
+    if ( ! is_wp_error( $html_content ) && wp_remote_retrieve_response_code( $html_content ) === 200 ) {
+        return wp_remote_retrieve_body( $html_content );
+    } else {
+        return 'Não foi possível carregar o conteúdo HTML do GitHub.';
+    }
+}
+add_shortcode( 'most-read-book-by-year-html-github', 'most_read_book_by_year_html_github_shortcode' );

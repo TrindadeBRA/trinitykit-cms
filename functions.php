@@ -132,6 +132,7 @@ function add_custom_post_preview_button($actions, $post) {
 // Adiciona o botão na listagem de posts
 add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);
 
+// Função para adicionar o botão "Visualizar no Front" na barra de administração
 function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
     if (!is_singular('post')) { // Verifica se estamos visualizando um post
         return;
@@ -141,7 +142,7 @@ function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
     $frontend_app_url = get_theme_mod('frontend_app_url');
 
     // Verifica se o URL do frontend do aplicativo está definido e se é um valor válido
-    if ($frontend_app_url && filter_var($frontend_app_url, FILTER_VALIDATE_URL)) {
+    if ($frontend_app_url) {
         global $post;
 
         // Constrói o novo link de visualização com base no URL do frontend, slug e a parte "/preview/blog/"
@@ -166,4 +167,4 @@ function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
 }
 
 // Adiciona o botão na barra de administração
-add_action('admin_bar_menu', 'add_custom_post_preview_button_admin_bar', 999);
+add_action('admin_bar_menu', 'add_custom_post_preview_button_admin_bar', 100);

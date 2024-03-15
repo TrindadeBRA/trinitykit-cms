@@ -106,6 +106,7 @@ function register_custom_styles() {
 add_action('admin_enqueue_scripts', 'register_custom_styles');
 
 
+
 function custom_post_preview_link($link, $post) {
     // Obtém o URL do frontend do aplicativo do tema mod
     $frontend_app_url = get_theme_mod('frontend_app_url');
@@ -116,7 +117,7 @@ function custom_post_preview_link($link, $post) {
         $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post->post_name;
 
         // Texto do botão
-        $button_text = 'Preview';
+        $button_text = 'Visualizar no Front';
 
         // Constrói o HTML do botão de visualização
         $preview_button = '<a href="' . esc_url($preview_link) . '" class="button button-primary">' . esc_html($button_text) . '</a>';
@@ -129,3 +130,27 @@ function custom_post_preview_link($link, $post) {
     return $link;
 }
 add_filter('preview_post_link', 'custom_post_preview_link', 10, 2);
+
+// Adiciona o botão "Visualizar no Front" na listagem de posts
+function add_custom_post_preview_button($actions, $post) {
+    // Obtém o URL do frontend do aplicativo do tema mod
+    $frontend_app_url = get_theme_mod('frontend_app_url');
+
+    // Verifica se o URL do frontend do aplicativo está definido e se é um valor válido
+    if ($frontend_app_url && filter_var($frontend_app_url, FILTER_VALIDATE_URL)) {
+        // Constrói o novo link de visualização com base no URL do frontend, slug e a parte "/preview/blog/"
+        $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post->post_name;
+
+        // Texto do botão
+        $button_text = 'Visualizar no Front';
+
+        // Constrói o HTML do botão de visualização
+        $preview_button = '<a href="' . esc_url($preview_link) . '" class="button">' . esc_html($button_text) . '</a>';
+
+        // Adiciona o botão de visualização ao array de ações
+        $actions['custom_preview'] = $preview_button;
+    }
+
+    return $actions;
+}
+add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);

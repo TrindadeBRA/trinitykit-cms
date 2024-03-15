@@ -115,8 +115,14 @@ function custom_post_preview_link($link, $post) {
         // Constrói o novo link de visualização com base no URL do frontend, slug e a parte "/preview/blog/"
         $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post->post_name;
 
-        // Retorna o novo link de visualização
-        return $preview_link;
+        // Texto do botão
+        $button_text = 'Preview';
+
+        // Constrói o HTML do botão de visualização
+        $preview_button = '<a href="' . esc_url($preview_link) . '" class="button button-primary">' . esc_html($button_text) . '</a>';
+
+        // Adiciona o botão de visualização antes do link padrão
+        $link = $preview_button . ' ' . $link;
     }
 
     // Retorna o link padrão se o URL do frontend não estiver definido corretamente

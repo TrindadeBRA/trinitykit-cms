@@ -135,14 +135,17 @@ add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);
 
 
 function preview_on_admin_bar($wp_admin_bar){
-    $frontend_app_url = get_theme_mod('frontend_app_url');
-    $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post->post_name;
-    $wp_admin_bar->add_node(array(
-        'id'    => 'custom_preview_button',
-        'title' => 'Visualizar no Front',
-        'href'  => $preview_link,
-        'meta'  => array('target' => '_blank'),
-    ));
+    global $post;
+    if ($post && is_admin() && isset($post->ID)) {
+        $frontend_app_url = get_theme_mod('frontend_app_url');
+        $post_name = $post->post_name;
+        $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post_name;
+        $wp_admin_bar->add_node(array(
+            'id'    => 'custom_preview_button',
+            'title' => 'Visualizar no Front',
+            'href'  => $preview_link,
+            'meta'  => array('target' => '_blank'),
+        ));
+    }
 }
 add_action('admin_bar_menu', 'preview_on_admin_bar', 999);
-    

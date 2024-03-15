@@ -60,12 +60,31 @@ add_action( 'init', 'register_contact_form_post_type' );
  * @since 1.0.0
  */
 add_action( 'rest_api_init', function () use ($mocked_token) {
+
+    $mocked_token = 'ohuhasgdkahsdkjasnbdkjbasdkjbdjb';
+    $frontend_app_url = get_theme_mod('frontend_app_url');
+
     register_rest_route( 'trinitykit/v1', '/contact-form/submit', array(
         'methods'  => 'POST',
         'callback' => 'contact_form_submit',
         'permission_callback' => function () use ($mocked_token, $frontend_app_url) {
             // Verifica se o token enviado é igual ao token mockado
             $token = isset($_SERVER['HTTP_AUTHORIZATION']) ? trim(str_replace('Bearer', '', $_SERVER['HTTP_AUTHORIZATION'])) : '';
+
+            // Verifique se o domínio da origem da solicitação é permitido
+            if (isset($_SERVER['HTTP_ORIGIN']) && !empty($frontend_app_url)) {
+                // Permita apenas solicitações do domínio da aplicação frontend
+                if ($_SERVER['HTTP_ORIGIN'] === $frontend_app_url) {
+                    // Permita a solicitação
+                    header('Access-Control-Allow-Origin: ' . $frontend_app_url);
+                    header('Access-Control-Allow-Methods: POST');
+                    header('Access-Control-Allow-Headers: Content-Type');
+                } else {
+                    // Se o domínio da origem não estiver na lista permitida, negue a solicitação
+                    return false;
+                }
+            }
+
             return hash_equals($mocked_token, $token);
         }
     ));

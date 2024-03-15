@@ -52,9 +52,6 @@ function register_talent_bank() {
 }
 add_action( 'init', 'register_talent_bank' );
 
-// Criação de um token mockado para validação
-$mocked_token = 'ohuhasgdkahsdkjasnbdkjbasdkjbdjb';
-
 function custom_talent_bank_columns( $columns ) {
     $columns['full_name'] = 'Nome';
     $columns['email'] = 'Email';
@@ -98,7 +95,8 @@ add_action( 'manage_talent_bank_posts_custom_column', 'custom_talent_bank_column
  */
 
  add_action( 'rest_api_init', function () use ($mocked_token) {
-    
+
+    $mocked_token = 'ohuhasgdkahsdkjasnbdkjbasdkjbdjb';
     $frontend_app_url = get_theme_mod('frontend_app_url');
 
     register_rest_route( 'trinitykit/v1/talents-bank', '/add-talent/', array(

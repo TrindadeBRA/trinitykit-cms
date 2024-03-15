@@ -11,7 +11,7 @@ function register_contact_form_post_type() {
     $labels = array(
         'name'                  => _x( 'Formulários de Contato', 'Nome do tipo de post' ),
         'singular_name'         => _x( 'Formulário de Contato', 'Nome singular do tipo de post' ),
-        'menu_name'             => _x( 'Formulários de Contato', 'Nome do menu' ),
+        'menu_name'             => _x( 'Form. de Contato', 'Nome do menu' ),
         'add_new'               => _x( 'Adicionar Novo', 'Novo item' ),
         'add_new_item'          => __( 'Adicionar Novo Formulário de Contato' ),
         'edit_item'             => __( 'Editar Formulário de Contato' ),
@@ -98,9 +98,12 @@ function contact_form_submit($request) {
         return new WP_Error('invalid_message_data', __('Message field cannot be empty'), array('status' => 400));
     }
 
+    // Define post title
+    $post_title = $name . ' - ' . $email;
+
     // Create the post
     $post_id = wp_insert_post(array(
-        'post_title'   => $name,
+        'post_title'   => $post_title,
         'post_content' => $message,
         'post_status'  => 'publish',
         'post_type'    => 'contact_form',
@@ -120,3 +123,26 @@ function contact_form_submit($request) {
         return new WP_Error('submission_failed', __('Failed to submit form'), array('status' => 500));
     }
 }
+
+function contact_form_columns( $columns ) {
+    $columns['name'] = 'Nome';
+    $columns['email'] = 'Email';
+    unset( $columns['author'] );
+    return $columns;
+}
+add_filter( 'manage_talent_bank_posts_columns', 'contact_form_columns' );
+
+function contact_form_column_content( $column, $post_id ) {
+    switch ( $column ) {
+        case 'full_name':
+            echo get_field( 'name', $post_id );
+            break;
+        case 'email':
+            echo get_field( 'email', $post_id );
+            break;
+        default:
+            // Lidar com outras colunas, se necessário
+            break;
+    }
+}
+add_action( 'manage_contact_form_posts_custom_column', 'contact_form_column_content', 10, 2 );

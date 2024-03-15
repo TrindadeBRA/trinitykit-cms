@@ -40,7 +40,6 @@ function get_post_data($request) {
     $args = array(
         'name'        => $slug,
         'post_type'   => 'post',
-        'post_status' => 'publish',
         'posts_per_page' => 1
     );
 

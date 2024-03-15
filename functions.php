@@ -106,7 +106,7 @@ function register_custom_styles() {
 add_action('admin_enqueue_scripts', 'register_custom_styles');
 
 
-// Adiciona o botão "Visualizar no Front" na listagem de posts
+// Função para adicionar o botão "Visualizar no Front"
 function add_custom_post_preview_button($actions, $post) {
     // Obtém o URL do frontend do aplicativo do tema mod
     $frontend_app_url = get_theme_mod('frontend_app_url');
@@ -128,4 +128,18 @@ function add_custom_post_preview_button($actions, $post) {
 
     return $actions;
 }
+
+// Adiciona o botão na listagem de posts
 add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);
+
+// Adiciona o botão no topbar dos posts
+add_action('post_submitbox_misc_actions', function ($post) {
+    $actions = array();
+    $actions = add_custom_post_preview_button($actions, $post);
+    
+    if (isset($actions['custom_preview'])) {
+        echo '<div class="misc-pub-section misc-pub-custom-preview">';
+        echo $actions['custom_preview'];
+        echo '</div>';
+    }
+});

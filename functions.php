@@ -104,3 +104,22 @@ function register_custom_styles() {
     wp_enqueue_style('custom-style', get_template_directory_uri() . '/css/rebuildFrontend.css', array(), '1.0', 'all');
 }
 add_action('admin_enqueue_scripts', 'register_custom_styles');
+
+
+function custom_post_preview_link($link, $post) {
+    // Obtém o URL do frontend do aplicativo do tema mod
+    $frontend_app_url = get_theme_mod('frontend_app_url');
+
+    // Verifica se o URL do frontend do aplicativo está definido e se é um valor válido
+    if ($frontend_app_url && filter_var($frontend_app_url, FILTER_VALIDATE_URL)) {
+        // Constrói o novo link de visualização com base no URL do frontend, slug e a parte "/preview/blog/"
+        $preview_link = trailingslashit($frontend_app_url) . 'preview/blog/' . $post->post_name;
+
+        // Retorna o novo link de visualização
+        return $preview_link;
+    }
+
+    // Retorna o link padrão se o URL do frontend não estiver definido corretamente
+    return $link;
+}
+add_filter('preview_post_link', 'custom_post_preview_link', 10, 2);

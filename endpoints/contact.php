@@ -59,10 +59,15 @@ add_action( 'init', 'register_contact_form_post_type' );
  *
  * @since 1.0.0
  */
-add_action( 'rest_api_init', function () {
+add_action( 'rest_api_init', function () use ($mocked_token) {
     register_rest_route( 'trinitykit/v1', '/contact-form/submit', array(
         'methods'  => 'POST',
         'callback' => 'contact_form_submit',
+        'permission_callback' => function () use ($mocked_token, $frontend_app_url) {
+            // Verifica se o token enviado é igual ao token mockado
+            $token = isset($_SERVER['HTTP_AUTHORIZATION']) ? trim(str_replace('Bearer', '', $_SERVER['HTTP_AUTHORIZATION'])) : '';
+            return hash_equals($mocked_token, $token);
+        }
     ));
 });
 

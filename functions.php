@@ -133,7 +133,7 @@ function add_custom_post_preview_button($actions, $post) {
 add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);
 
 // Função para adicionar o botão "Visualizar no Front" na barra de administração
-function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
+function preview_on_admin_bar($wp_admin_bar) {
     if (!is_singular('post')) { // Verifica se estamos visualizando um post
         return;
     }
@@ -167,4 +167,5 @@ function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
 }
 
 // Adiciona o botão na barra de administração
-add_action('admin_bar_menu', 'add_custom_post_preview_button_admin_bar', 100);
+add_action('admin_bar_menu', 'preview_on_admin_bar', 999);
+

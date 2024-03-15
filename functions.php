@@ -149,7 +149,7 @@ function add_custom_post_preview_button_admin_bar($wp_admin_bar) {
         $preview_link = trailingslashit($frontend_app_url) . 'preview/blog?slug=' . $post->post_name;
 
         // Texto do botão
-        $button_text = 'Ver o Post';
+        $button_text = 'Visualizar no Front';
 
         // Constrói o HTML do botão de visualização
         $args = array(

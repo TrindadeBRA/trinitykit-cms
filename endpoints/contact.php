@@ -134,7 +134,7 @@ add_filter( 'manage_contact_form_posts_columns', 'contact_form_columns' );
 
 function contact_form_column_content( $column, $post_id ) {
     switch ( $column ) {
-        case 'full_name':
+        case 'name':
             echo get_field( 'name', $post_id );
             break;
         case 'email':

@@ -127,6 +127,7 @@ function contact_form_submit($request) {
 function contact_form_columns( $columns ) {
     $columns['name'] = 'Nome';
     $columns['email'] = 'Email';
+    $columns['message'] = 'Mensagem';
     unset( $columns['author'] );
     return $columns;
 }
@@ -139,6 +140,9 @@ function contact_form_column_content( $column, $post_id ) {
             break;
         case 'email':
             echo get_field( 'email', $post_id );
+            break;
+        case 'message':
+            echo get_post_field( 'post_content', $post_id );
             break;
         default:
             // Lidar com outras colunas, se necessário

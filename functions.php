@@ -106,8 +106,8 @@ function register_custom_styles() {
 add_action('admin_enqueue_scripts', 'register_custom_styles');
 
 
-
-function custom_post_preview_link($link, $post) {
+// Adiciona o botão "Visualizar no Front" na listagem de posts
+function add_custom_post_preview_button($actions, $post) {
     // Obtém o URL do frontend do aplicativo do tema mod
     $frontend_app_url = get_theme_mod('frontend_app_url');
 
@@ -122,11 +122,10 @@ function custom_post_preview_link($link, $post) {
         // Constrói o HTML do botão de visualização
         $preview_button = '<a href="' . esc_url($preview_link) . '" class="">' . esc_html($button_text) . '</a>';
 
-        // Adiciona o botão de visualização antes do link padrão
-        $link = $preview_button . ' ' . $link;
+        // Adiciona o botão de visualização ao array de ações
+        $actions['custom_preview'] = $preview_button;
     }
 
-    // Retorna o link padrão se o URL do frontend não estiver definido corretamente
-    return $link;
+    return $actions;
 }
-add_filter('preview_post_link', 'custom_post_preview_link', 10, 2);
+add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);

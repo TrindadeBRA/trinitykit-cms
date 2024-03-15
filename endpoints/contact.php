@@ -130,7 +130,7 @@ function contact_form_columns( $columns ) {
     unset( $columns['author'] );
     return $columns;
 }
-add_filter( 'manage_talent_bank_posts_columns', 'contact_form_columns' );
+add_filter( 'manage_contact_form_posts_columns', 'contact_form_columns' );
 
 function contact_form_column_content( $column, $post_id ) {
     switch ( $column ) {

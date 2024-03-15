@@ -137,11 +137,11 @@ add_filter('post_row_actions', 'add_custom_post_preview_button', 10, 2);
 function preview_on_admin_bar($wp_admin_bar){
 
     $frontend_app_url = get_theme_mod('frontend_app_url');
-    
+
     $wp_admin_bar->add_node(array(
         'id'    => 'custom_preview_button',
-        'title' => 'Preview do Rascunho',
-        'href'  => $nova_url_link,
+        'title' => 'Visualizar no Front',
+        'href'  => $frontend_app_url,
         'meta'  => array('target' => '_blank'),
     ));
     

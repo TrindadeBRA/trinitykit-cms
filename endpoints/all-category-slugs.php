@@ -4,13 +4,13 @@
  *
  * This endpoint retrieves slugs of all parent categories.
  *
- * Endpoint URL: /wp-json/trinitykit/v1/parent-category-slugs/
+ * Endpoint URL: /wp-json/trinitykit/v1/all-category-slugs/
  * Method: GET
  */
 
 add_action('rest_api_init', 'register_parent_category_slugs_endpoint');
 function register_parent_category_slugs_endpoint() {
-    register_rest_route('trinitykit/v1', '/parent-category-slugs/', array(
+    register_rest_route('trinitykit/v1', '/all-category-slugs/', array(
         'methods' => 'GET',
         'callback' => 'get_parent_category_slugs',
     ));

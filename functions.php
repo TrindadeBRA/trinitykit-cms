@@ -10,6 +10,7 @@ require_once get_template_directory() . '/endpoints/post-slug.php';
 require_once get_template_directory() . '/endpoints/latest-posts.php';
 require_once get_template_directory() . '/endpoints/talents-bank.php';
 require_once get_template_directory() . '/endpoints/all-slugs.php';
+require_once get_template_directory() . '/endpoints/all-category-slugs.php';
 require_once get_template_directory() . '/endpoints/contact.php';
 
 // Add suporte a imagens destacadas

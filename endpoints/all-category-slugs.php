@@ -25,10 +25,7 @@ function get_parent_category_slugs($request) {
 
     // Percorre todas as categorias e verifica se são categorias pai
     foreach ($categories as $category) {
-        if ($category->parent == 0) { // Verifica se é uma categoria pai
-            // Adiciona o slug da categoria pai ao array
-            $category_slugs[] = $category->slug;
-        }
+        $category_slugs[] = $category->slug;
     }
 
     // Retorna uma resposta REST com os slugs das categorias pai
